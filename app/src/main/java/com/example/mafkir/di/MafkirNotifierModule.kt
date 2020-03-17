@@ -30,11 +30,10 @@ class MafkirNotifierModule {
             val channel = NotificationChannel(Constants.CHANNEL_ID, name, importance).apply {
                 description = descriptionText
             }
+
             // Register the channel with the system
             val notificationManager: NotificationManager =
-                app.getSystemService(
-                    Context.NOTIFICATION_SERVICE
-                ) as NotificationManager
+                app.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
     }
