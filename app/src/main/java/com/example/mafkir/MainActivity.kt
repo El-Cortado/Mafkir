@@ -25,14 +25,14 @@ class MainActivity : AppCompatActivity() {
 
     @Inject
     @field:Named("Notifications")
-    lateinit var mEventBus: EventBus;
+    lateinit var mEventBus: EventBus
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this);
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         checkForPermissions()
-        mEventBus.register(NotificationRegistry());
-        createNotificationChannel();
+        mEventBus.register(NotificationRegistry())
+        createNotificationChannel()
         startService(Intent(this, NotificationsService::class.java))
         setContentView(R.layout.activity_main)
         val button = findViewById<Button>(R.id.testNotification)
@@ -99,7 +99,7 @@ class MainActivity : AppCompatActivity() {
                     "Our app cant rum without these permissions.",
                     Toast.LENGTH_SHORT
                 ).show()
-                this.finishAffinity();
+                this.finishAffinity()
             }
 
         val dialog: AlertDialog = builder.create()

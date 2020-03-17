@@ -9,10 +9,10 @@ import javax.inject.Named
 
 class NotificationsService : NotificationListenerService() {
     @Inject @field:Named("Notifications")
-    lateinit var mEventBus:EventBus;
+    lateinit var mEventBus:EventBus
 
     override fun onCreate() {
-        AndroidInjection.inject(this);
+        AndroidInjection.inject(this)
         super.onCreate()
     }
 

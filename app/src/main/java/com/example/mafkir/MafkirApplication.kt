@@ -12,15 +12,15 @@ import javax.inject.Inject
 
 class MafkirApplication : Application(), HasActivityInjector, HasServiceInjector {
 
-    override fun activityInjector(): DispatchingAndroidInjector<Activity> = mAndroidActivityInjector;
+    override fun activityInjector(): DispatchingAndroidInjector<Activity> = mAndroidActivityInjector
 
-    override fun serviceInjector(): DispatchingAndroidInjector<Service> = mAndroidServiceInjector;
-
-    @Inject
-    lateinit var mAndroidActivityInjector: DispatchingAndroidInjector<Activity>;
+    override fun serviceInjector(): DispatchingAndroidInjector<Service> = mAndroidServiceInjector
 
     @Inject
-    lateinit var mAndroidServiceInjector: DispatchingAndroidInjector<Service>;
+    lateinit var mAndroidActivityInjector: DispatchingAndroidInjector<Activity>
+
+    @Inject
+    lateinit var mAndroidServiceInjector: DispatchingAndroidInjector<Service>
 
     override fun onCreate() {
         super.onCreate()
