@@ -7,8 +7,8 @@ import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
-open class EventBusModule {
+class EventBusModule {
     @Singleton
     @Provides @Named("Notifications")
-    open fun providesNotificationEventBus():EventBus = EventBus()
+    fun providesNotificationEventBus():EventBus = EventBus()
 }

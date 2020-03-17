@@ -17,7 +17,7 @@ class NotificationsService : NotificationListenerService() {
     }
 
     override fun onNotificationRemoved(sbn: StatusBarNotification) {
-        mEventBus.post(sbn)
+        // Only care about one of them
     }
 
     override fun onNotificationPosted(sbn: StatusBarNotification) {
