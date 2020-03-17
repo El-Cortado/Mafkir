@@ -8,6 +8,8 @@ import com.example.mafkir.notifications.NotificationsService
 class MafkirBootReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
-        context.startService(Intent(context, NotificationsService::class.java))
+        if(Intent.ACTION_BOOT_COMPLETED == intent.action) {
+            context.startService(Intent(context, NotificationsService::class.java))
+        }
     }
 }
