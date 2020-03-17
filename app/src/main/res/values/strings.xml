@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Mafkir</string>
+    <string name="service_name">MafkirNotificationListener</string>
+    <string name="button">test notification</string>
 </resources>
