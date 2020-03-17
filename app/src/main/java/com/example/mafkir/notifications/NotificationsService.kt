@@ -17,10 +17,10 @@ class NotificationsService : NotificationListenerService() {
     }
 
     override fun onNotificationRemoved(sbn: StatusBarNotification) {
-        mEventBus.post(sbn);
+        mEventBus.post(sbn)
     }
 
     override fun onNotificationPosted(sbn: StatusBarNotification) {
-        mEventBus.post(sbn);
+        mEventBus.post(sbn)
     }
 }

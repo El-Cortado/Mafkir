@@ -10,12 +10,12 @@ class NotificationRegistry {
     fun statusBarNotificationEvent(statusBarNotification: StatusBarNotification) {
         val text =
             statusBarNotification.getNotification().extras.getCharSequence(Notification.EXTRA_TEXT)
-                .toString();
+                .toString()
         val title =
             statusBarNotification.getNotification().extras.getCharSequence(Notification.EXTRA_TITLE)
-                .toString();
-        Log.i("Mafkir", text);
-        Log.i("Mafkir", title);
-        Log.i("Mafkir", statusBarNotification.packageName);
+                .toString()
+        Log.i("Mafkir", text)
+        Log.i("Mafkir", title)
+        Log.i("Mafkir", statusBarNotification.packageName)
     }
 }
