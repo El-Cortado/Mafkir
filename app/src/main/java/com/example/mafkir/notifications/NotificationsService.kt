@@ -1,16 +1,14 @@
 package com.example.mafkir.notifications
 
-import android.app.Notification
-import android.content.Intent
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
-import android.util.Log
 import com.google.common.eventbus.EventBus
 import dagger.android.AndroidInjection
 import javax.inject.Inject
+import javax.inject.Named
 
 class NotificationsService : NotificationListenerService() {
-    @Inject
+    @Inject @field:Named("Notifications")
     lateinit var mEventBus:EventBus;
 
     override fun onCreate() {

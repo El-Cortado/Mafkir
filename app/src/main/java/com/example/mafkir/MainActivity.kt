@@ -15,10 +15,11 @@ import com.example.mafkir.notifications.NotificationsService
 import com.google.common.eventbus.EventBus
 import dagger.android.AndroidInjection
 import javax.inject.Inject
+import javax.inject.Named
 
 class MainActivity : AppCompatActivity() {
 
-    @Inject
+    @Inject @field:Named("Notifications")
     lateinit var mEventBus: EventBus;
 
     override fun onCreate(savedInstanceState: Bundle?) {

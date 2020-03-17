@@ -13,7 +13,7 @@ import javax.inject.Singleton
     modules = [AndroidInjectionModule::class,
         ActivityBuilder::class,
         ServiceBuilder::class,
-        NotificationEventBusModule::class]
+        EventBusModule::class]
 )
 interface AppComponent : AndroidInjector<MafkirApplication> {
     fun inject(application: Application)
