@@ -16,11 +16,11 @@ class MafkirNotifierModule {
     @Singleton
     @Provides
     fun providesNotificationMafkirNotifier(app: Application): MafkirNotifier {
-        createNotificationChannel(app)
+        registerNotificationChannel(app)
         return MafkirNotifier(app, Constants.CHANNEL_ID)
     }
 
-    private fun createNotificationChannel(app: Application) {
+    private fun registerNotificationChannel(app: Application) {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
