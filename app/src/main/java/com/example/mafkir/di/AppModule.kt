@@ -5,14 +5,37 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
+import androidx.room.Room
 import com.example.mafkir.Constants
 import com.example.mafkir.notifications.MafkirNotifier
+import com.example.mafkir.permissions.MafkirPermissionsValidator
+import com.example.mafkir.persistence.MafkirContactDao
+import com.example.mafkir.persistence.MafkirDatabase
+import com.example.mafkir.repository.MafkirContactRepository
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
 @Module
-class MafkirNotifierModule {
+class AppModule {
+
+    @Singleton
+    @Provides
+    fun providesMafkirDatabase(app: Application): MafkirDatabase {
+        return Room.databaseBuilder(app, MafkirDatabase::class.java, "MafkirDatabase").build()
+    }
+
+    @Singleton
+    @Provides
+    fun providesMafkirContactDao(db: MafkirDatabase): MafkirContactDao {
+        return db.mafkirContactDao()
+    }
+
+    @Provides
+    fun providesMafkirContactRepository(mafkirContactDao: MafkirContactDao): MafkirContactRepository {
+        return MafkirContactRepository(mafkirContactDao)
+    }
+
     @Singleton
     @Provides
     fun providesNotificationMafkirNotifier(app: Application): MafkirNotifier {
@@ -36,5 +59,11 @@ class MafkirNotifierModule {
                 app.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
+    }
+
+    @Singleton
+    @Provides
+    fun providesNotificationMafkirPermissionsValidator(app: Application): MafkirPermissionsValidator {
+        return MafkirPermissionsValidator(app)
     }
 }

@@ -14,9 +14,6 @@ interface MafkirContactDao {
     @Delete
     fun delete(mafkirContact: MafkirContact)
 
-    @Query("select * from mafkir_contacts where contact = :contact")
-    fun get(contact: String): MafkirContact
-
     @Query("select * from mafkir_contacts")
     fun getAll(): LiveData<List<MafkirContact>>
 }

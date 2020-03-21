@@ -14,8 +14,7 @@ import javax.inject.Singleton
         ActivityBuilder::class,
         ServiceBuilder::class,
         EventBusModule::class,
-        MafkirNotifierModule::class,
-        MafkirPermissionsValidatorModule::class,
+        AppModule::class,
         NotificationRepositoryModule::class]
 )
 interface AppComponent : AndroidInjector<MafkirApplication> {
