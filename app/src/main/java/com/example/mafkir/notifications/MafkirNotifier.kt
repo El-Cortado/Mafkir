@@ -18,7 +18,7 @@ class MafkirNotifier(application: Application, channelId: String) {
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
         with(NotificationManagerCompat.from(mApplication)) {
-            notify(1337, builder.build())
+            notify(id, builder.build())
         }
     }
 }
