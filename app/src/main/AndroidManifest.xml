@@ -33,7 +33,7 @@
             </intent-filter>
         </service>
 
-        <activity android:name="com.cortado.mafkir.MainActivity">
+        <activity android:name="com.cortado.mafkir.ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

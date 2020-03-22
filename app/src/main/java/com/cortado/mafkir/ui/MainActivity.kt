@@ -1,4 +1,4 @@
-package com.cortado.mafkir
+package com.cortado.mafkir.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.Button
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.cortado.mafkir.R
 import com.cortado.mafkir.model.MafkirContactViewModel
 import com.cortado.mafkir.notifications.InteractionsService
 import com.cortado.mafkir.notifications.MafkirNotifier
@@ -43,6 +44,8 @@ class MainActivity : DaggerAppCompatActivity() {
             viewModelProviderFactory
         ).get(MafkirContactViewModel::class.java)
 
+        mafkirContactViewModel.insert("abc" + Math.random(), 6)
+
         mafkirContactViewModel.getAll().observe(this, Observer { lisOfNotes ->
             lisOfNotes?.let {
                 lisOfNotes.iterator().forEach {
@@ -50,11 +53,5 @@ class MainActivity : DaggerAppCompatActivity() {
                 }
             }
         })
-
-        val button = findViewById<Button>(R.id.testNotification)
-        button.setOnClickListener {
-            //
-        }
-
     }
 }
