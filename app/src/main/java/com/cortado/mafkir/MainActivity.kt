@@ -7,25 +7,21 @@ import android.widget.Button
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.cortado.mafkir.model.MafkirContactViewModel
+import com.cortado.mafkir.notifications.InteractionsService
 import com.cortado.mafkir.notifications.MafkirNotifier
-import com.cortado.mafkir.notifications.NotificationRepository
-import com.cortado.mafkir.notifications.NotificationsService
 import com.cortado.mafkir.permissions.MafkirPermissionsValidator
-import com.cortado.mafkir.persistence.MafkirContact
 import com.cortado.mafkir.util.ViewModelProviderFactory
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
+import javax.inject.Named
 
 
 class MainActivity : DaggerAppCompatActivity() {
-    @Inject
+    @field:[Inject Named("User")]
     lateinit var mafkirNotifier: MafkirNotifier
 
     @Inject
     lateinit var mafkirPermissionsValidator: MafkirPermissionsValidator
-
-    @Inject
-    lateinit var notificationRepository: NotificationRepository
 
     @Inject
     lateinit var viewModelProviderFactory: ViewModelProviderFactory
@@ -38,7 +34,7 @@ class MainActivity : DaggerAppCompatActivity() {
 
         mafkirPermissionsValidator.validate(this)
 
-        startService(Intent(this, NotificationsService::class.java))
+        startService(Intent(this, InteractionsService::class.java))
 
         setContentView(R.layout.activity_main)
 
@@ -50,21 +46,14 @@ class MainActivity : DaggerAppCompatActivity() {
         mafkirContactViewModel.getAll().observe(this, Observer { lisOfNotes ->
             lisOfNotes?.let {
                 lisOfNotes.iterator().forEach {
-                    Log.i("Mafkir", it.contact)
+                    Log.i("Mafkir", "contact:$it")
                 }
             }
         })
 
         val button = findViewById<Button>(R.id.testNotification)
         button.setOnClickListener {
-            mafkirContactViewModel.insert(
-                MafkirContact(
-                    0,
-                    "contact" + Math.random(),
-                    System.currentTimeMillis(),
-                    System.currentTimeMillis()
-                )
-            )
+            //
         }
 
     }

@@ -1,6 +1,7 @@
 package com.cortado.mafkir.di
 
 import android.app.Application
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
@@ -14,6 +15,7 @@ import com.cortado.mafkir.persistence.MafkirDatabase
 import com.cortado.mafkir.repository.MafkirContactRepository
 import dagger.Module
 import dagger.Provides
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -31,16 +33,24 @@ class AppModule {
         return db.mafkirContactDao()
     }
 
+    @Singleton
     @Provides
     fun providesMafkirContactRepository(mafkirContactDao: MafkirContactDao): MafkirContactRepository {
         return MafkirContactRepository(mafkirContactDao)
     }
 
     @Singleton
-    @Provides
+    @Provides @Named("User")
     fun providesNotificationMafkirNotifier(app: Application): MafkirNotifier {
         registerNotificationChannel(app)
         return MafkirNotifier(app, Constants.CHANNEL_ID)
+    }
+
+    @Singleton
+    @Provides @Named("Silent")
+    fun providesSilentNotificationMafkirNotifier(app: Application): MafkirNotifier {
+        registerSilentNotificationChannel(app)
+        return MafkirNotifier(app, Constants.SILENT_CHANNEL_ID)
     }
 
     private fun registerNotificationChannel(app: Application) {
@@ -52,6 +62,25 @@ class AppModule {
             val importance = NotificationManager.IMPORTANCE_DEFAULT
             val channel = NotificationChannel(Constants.CHANNEL_ID, name, importance).apply {
                 description = descriptionText
+            }
+
+            // Register the channel with the system
+            val notificationManager: NotificationManager =
+                app.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+    private fun registerSilentNotificationChannel(app: Application) {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "Mafkir silent channel"
+            val descriptionText = "Mafkir persistent service silent channel"
+            val importance = NotificationManager.IMPORTANCE_LOW
+            val channel = NotificationChannel(Constants.SILENT_CHANNEL_ID, name, importance).apply {
+                description = descriptionText
+                lockscreenVisibility = Notification.VISIBILITY_PRIVATE
             }
 
             // Register the channel with the system

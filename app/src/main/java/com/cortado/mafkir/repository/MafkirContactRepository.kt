@@ -9,21 +9,34 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MafkirContactRepository @Inject constructor(private val mafkirContactDao: MafkirContactDao) {
-    fun insert(mafkirContact: MafkirContact) {
+    fun insert(contact: String, interactionInterval: Long) {
         CoroutineScope(Dispatchers.IO).launch {
-            mafkirContactDao.insert(mafkirContact)
+            mafkirContactDao.insert(
+                MafkirContact(
+                    0,
+                    contact,
+                    interactionInterval,
+                    System.currentTimeMillis()
+                )
+            )
         }
     }
 
-    fun update(mafkirContact: MafkirContact) {
+    fun updateLastInteraction(contact: String) {
         CoroutineScope(Dispatchers.IO).launch {
-            mafkirContactDao.insert(mafkirContact)
+            mafkirContactDao.updateLastInteraction(contact, System.currentTimeMillis())
         }
     }
 
-    fun delete(mafkirContact: MafkirContact) {
+    fun updateInteractionInterval(contact: String, interactionInterval: Long) {
         CoroutineScope(Dispatchers.IO).launch {
-            mafkirContactDao.insert(mafkirContact)
+            mafkirContactDao.updateInteractionInterval(contact, interactionInterval)
+        }
+    }
+
+    fun delete(contact: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            mafkirContactDao.delete(contact)
         }
     }
 
