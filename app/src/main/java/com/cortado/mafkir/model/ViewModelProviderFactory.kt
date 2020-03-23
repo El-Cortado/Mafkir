@@ -1,4 +1,4 @@
-package com.cortado.mafkir.util
+package com.cortado.mafkir.model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

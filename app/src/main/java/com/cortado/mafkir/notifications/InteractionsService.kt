@@ -28,7 +28,7 @@ class InteractionsService : NotificationListenerService() {
         super.onStartCommand(intent, flags, startId)
         val notification = mafkirNotifier.build(
             "Mafkir",
-            "mafkir has got your back, were here to help you not forget",
+            "Mafkir has got your back, we are here to help you not forget",
             true
         )
         startForeground(1337, notification)
@@ -36,7 +36,7 @@ class InteractionsService : NotificationListenerService() {
     }
 
     override fun onNotificationRemoved(sbn: StatusBarNotification) {
-        //
+        // Don't care about the removals
     }
 
     override fun onNotificationPosted(sbn: StatusBarNotification) {
