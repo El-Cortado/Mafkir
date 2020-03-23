@@ -1,7 +1,7 @@
 package com.cortado.mafkir.di
 
 import androidx.lifecycle.ViewModelProvider
-import com.cortado.mafkir.util.ViewModelProviderFactory
+import com.cortado.mafkir.model.ViewModelProviderFactory
 import dagger.Binds
 import dagger.Module
 
@@ -9,7 +9,6 @@ import dagger.Module
 @Module
 abstract class ViewModelFactoryModule {
 
-    // Method #2
     @Binds
-    abstract fun bindViewModelFactory(viewModelProvideFactory: ViewModelProviderFactory): ViewModelProvider.Factory
+    abstract fun bindViewModelFactory(viewModelProviderFactory: ViewModelProviderFactory): ViewModelProvider.Factory
 }

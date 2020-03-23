@@ -10,7 +10,6 @@ import dagger.multibindings.IntoMap
 @Module
 abstract class ViewModelModule {
 
-    // Method #1
     @Binds
     @IntoMap
     @ViewModelKey(MafkirContactViewModel::class)
