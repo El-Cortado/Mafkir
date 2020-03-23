@@ -13,9 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cortado.mafkir.R
 import com.cortado.mafkir.model.MafkirContactViewModel
+import com.cortado.mafkir.model.ViewModelProviderFactory
 import com.cortado.mafkir.persistence.MafkirContact
 import com.cortado.mafkir.ui.adapter.MafkirContactListAdapter
-import com.cortado.mafkir.util.ViewModelProviderFactory
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_list.*
 import javax.inject.Inject

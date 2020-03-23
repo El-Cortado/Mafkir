@@ -8,8 +8,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.cortado.mafkir.R
 import com.cortado.mafkir.model.MafkirContactViewModel
+import com.cortado.mafkir.model.ViewModelProviderFactory
 import com.cortado.mafkir.persistence.MafkirContact
-import com.cortado.mafkir.util.ViewModelProviderFactory
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_edit.*
 import javax.inject.Inject
