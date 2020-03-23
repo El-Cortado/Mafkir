@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-
+apply plugin: "androidx.navigation.safeargs.kotlin"
 
 android {
     compileSdkVersion 28
@@ -44,12 +44,10 @@ android {
 }
 
 dependencies {
-
     def room_version = "2.2.5"
     def lifecycle_version = "2.2.0"
     def dagger_version = "2.27"
     def recycler_view = "1.1.0"
-    def nav_version = "2.2.1"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

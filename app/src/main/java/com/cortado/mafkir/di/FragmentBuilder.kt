@@ -1,5 +1,7 @@
 package com.cortado.mafkir.di
 
+import com.cortado.mafkir.ui.AddFragment
+import com.cortado.mafkir.ui.EditFragment
 import com.cortado.mafkir.ui.ListFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -8,4 +10,10 @@ import dagger.android.ContributesAndroidInjector
 abstract class FragmentBuilder {
     @ContributesAndroidInjector
     abstract fun contributeListFragment(): ListFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeAddFragment(): AddFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeEditFragment(): EditFragment
 }

@@ -8,5 +8,31 @@
         android:id="@+id/listFragment"
         android:name="com.cortado.mafkir.ui.ListFragment"
         android:label="ListFragment">
+        <action
+            android:id="@+id/action_listFragment_to_addFragment"
+            app:destination="@id/addFragment" />
+        <action
+            android:id="@+id/action_listFragment_to_editFragment"
+            app:destination="@id/editFragment" >
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/addFragment"
+        android:name="com.cortado.mafkir.ui.AddFragment"
+        android:label="AddFragment" >
+        <argument
+            android:name="chosenContact"
+            app:argType="string"
+            app:nullable="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/editFragment"
+        android:name="com.cortado.mafkir.ui.EditFragment"
+        android:label="EditFragment" >
+        <argument
+            android:name="mafkirContact"
+            app:argType="com.cortado.mafkir.persistence.MafkirContact"
+            app:nullable="false" />
     </fragment>
 </navigation>

@@ -33,7 +33,6 @@ class ListFragment : DaggerFragment(),
     lateinit var allMafkirContacts: List<MafkirContact>
 
 
-    // Method #1
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -43,23 +42,21 @@ class ListFragment : DaggerFragment(),
         return inflater.inflate(R.layout.fragment_list, container, false)
     }
 
-    // Method #2
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        setupViewModel()    // Step 1
-        initRecyclerView()  // Step 2
-        observerLiveData()  // Step 3
+        setupViewModel()
+        initRecyclerView()
+        observerLiveData()
     }
 
-    // Method #3
     private fun observerLiveData() {
-        mafkirContactViewModel.getAll().observe(viewLifecycleOwner, Observer { lisOfMafkirContacts ->
-            lisOfMafkirContacts?.let {
-                allMafkirContacts = it
-                mafkirContactListAdapter.swap(it)
-            }
-        })
+        mafkirContactViewModel.getAll()
+            .observe(viewLifecycleOwner, Observer { lisOfMafkirContacts ->
+                lisOfMafkirContacts?.let {
+                    allMafkirContacts = it
+                    mafkirContactListAdapter.swap(it)
+                }
+            })
     }
 
     private fun initRecyclerView() {
@@ -77,11 +74,13 @@ class ListFragment : DaggerFragment(),
 
     private fun setupViewModel() {
         mafkirContactViewModel =
-            ViewModelProvider(this, viewModelProviderFactory).get(MafkirContactViewModel::class.java)
+            ViewModelProvider(
+                this,
+                viewModelProviderFactory
+            ).get(MafkirContactViewModel::class.java)
     }
 
     private fun initSwipeToDelete(): ItemTouchHelper.SimpleCallback {
-        //Swipe recycler view items on RIGHT
         return object : ItemTouchHelper.SimpleCallback(
             0, ItemTouchHelper.RIGHT
         ) {
@@ -102,8 +101,8 @@ class ListFragment : DaggerFragment(),
     }
 
     override fun onItemSelected(position: Int, item: MafkirContact) {
-//        val navDirection = ListFragmentDirections.actionListFragmentToEditFragment(item)
-//        findNavController().navigate(navDirection)
+        val navDirection = ListFragmentDirections.actionListFragmentToEditFragment(item)
+        findNavController().navigate(navDirection)
     }
 }
 

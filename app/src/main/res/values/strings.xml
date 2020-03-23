@@ -2,4 +2,7 @@
     <string name="app_name">Mafkir</string>
     <string name="service_name">MafkirInteractionsService</string>
     <string name="button">test notification</string>
+    <string name="save">Save</string>
+    <string name="reminderInterval">Reminder Interval</string>
+    <string name="contact">Contact</string>
 </resources>
