@@ -6,9 +6,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.cortado.mafkir.R
+import com.cortado.mafkir.model.TimeConverter
 import com.cortado.mafkir.persistence.MafkirContact
-import com.cortado.mafkir.util.DateConverter
 import kotlinx.android.synthetic.main.mafkircontact_items.view.*
+import javax.inject.Inject
 
 class MafkirContactListAdapter(mafkirContactList:List<MafkirContact>, private val interaction: Interaction? = null
 ) : RecyclerView.Adapter<MafkirContactListAdapter.ViewHolder>() {
@@ -49,10 +50,14 @@ class MafkirContactListAdapter(mafkirContactList:List<MafkirContact>, private va
         itemView: View,
         private val interaction: Interaction?
     ) : RecyclerView.ViewHolder(itemView) {
+
+        @Inject
+        lateinit var timeConverter: TimeConverter
+
         fun bind(item: MafkirContact) {
             itemView.txtContact.text = item.contact
-            itemView.txtInterval.text = item.interactionInterval.toString()
-            itemView.txtLastInteraction.text = DateConverter().getDate(item.lastInteraction)
+            itemView.txtInterval.text = timeConverter.millisToDays(item.interactionInterval).toString()
+            itemView.txtLastInteraction.text = timeConverter.millisToDate(item.lastInteraction)
 
             itemView.setOnClickListener {
                 interaction?.onItemSelected(adapterPosition,item)

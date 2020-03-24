@@ -7,16 +7,20 @@ import com.cortado.mafkir.repository.MafkirContactRepository
 import javax.inject.Inject
 
 class MafkirContactViewModel @Inject constructor(
-    val mafkirContactRepository: MafkirContactRepository
+    private val mafkirContactRepository: MafkirContactRepository
 ) : ViewModel() {
+
+    @Inject
+    lateinit var timeConverter: TimeConverter
+
     private val mafkirContacts: LiveData<List<MafkirContact>> = mafkirContactRepository.getAll()
 
     fun insert(contact: String, interactionInterval: Long) {
         mafkirContactRepository.insert(contact, interactionInterval)
     }
 
-    fun updateInteractionInterval(contact: String, interactionInterval: Long) {
-        mafkirContactRepository.updateInteractionInterval(contact, interactionInterval)
+    fun updateInteractionInterval(contact: String, interactionIntervalDays: Long) {
+        mafkirContactRepository.updateInteractionInterval(contact, timeConverter.daysToMillis(interactionIntervalDays))
     }
 
     fun delete(contact: String) {
