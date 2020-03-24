@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cortado.mafkir.R
 import com.cortado.mafkir.model.MafkirContactViewModel
-import com.cortado.mafkir.model.TimeConverter
 import com.cortado.mafkir.model.ViewModelProviderFactory
 import com.cortado.mafkir.persistence.MafkirContact
 import com.cortado.mafkir.ui.adapter.MafkirContactListAdapter
