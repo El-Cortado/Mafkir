@@ -13,7 +13,6 @@ class MafkirContactViewModel @Inject constructor(
     @Inject
     lateinit var timeConverter: TimeConverter
 
-    private val mafkirContacts: LiveData<List<MafkirContact>> = mafkirContactRepository.getAll()
 
     fun insert(contact: String, interactionIntervalDays: Long) {
         mafkirContactRepository.insert(contact, timeConverter.daysToMillis(interactionIntervalDays))
@@ -28,7 +27,7 @@ class MafkirContactViewModel @Inject constructor(
     }
 
     fun getAll(): LiveData<List<MafkirContact>> {
-        return mafkirContacts
+        return mafkirContactRepository.getAll()
     }
 
 }

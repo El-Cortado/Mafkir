@@ -9,6 +9,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MafkirContactRepository @Inject constructor(private val mafkirContactDao: MafkirContactDao) {
+    private val allContacts = mafkirContactDao.getAll()
+
     fun insert(contact: String, interactionIntervalMillis: Long) {
         CoroutineScope(Dispatchers.IO).launch {
             mafkirContactDao.insert(
@@ -41,6 +43,6 @@ class MafkirContactRepository @Inject constructor(private val mafkirContactDao: 
     }
 
     fun getAll(): LiveData<List<MafkirContact>> {
-        return mafkirContactDao.getAll()
+        return allContacts
     }
 }

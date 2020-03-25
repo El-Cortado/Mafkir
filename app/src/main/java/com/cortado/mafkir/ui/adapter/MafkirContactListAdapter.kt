@@ -55,16 +55,23 @@ class MafkirContactListAdapter(
 
         fun bind(item: MafkirContact) {
             itemView.txtContact.text = item.contact
-            itemView.txtInterval.text = String.format(
-                itemView.resources.getString(R.string.intervalDisplay),
-                timeConverter.millisToDays(item.interactionInterval)
-            )
+            itemView.txtInterval.text =
+                formatIntervalText(timeConverter.millisToDays(item.interactionInterval))
             if (System.currentTimeMillis() - item.lastInteraction > item.interactionInterval) {
                 itemView.cardView.setCardBackgroundColor(Color.RED)
             }
             itemView.setOnClickListener {
                 interaction?.onItemSelected(adapterPosition, item)
             }
+        }
+
+        private fun formatIntervalText(intervalDays: Long): String {
+            if (intervalDays > 1) {
+                return String.format(
+                    itemView.resources.getString(R.string.intervalDisplayDays), intervalDays
+                )
+            }
+            return itemView.resources.getString(R.string.intervalDisplayDay)
         }
 
     }
