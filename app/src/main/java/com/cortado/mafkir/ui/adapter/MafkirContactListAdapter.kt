@@ -1,5 +1,6 @@
 package com.cortado.mafkir.ui.adapter
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,9 +10,9 @@ import com.cortado.mafkir.R
 import com.cortado.mafkir.model.TimeConverter
 import com.cortado.mafkir.persistence.MafkirContact
 import kotlinx.android.synthetic.main.mafkircontact_items.view.*
-import javax.inject.Inject
 
-class MafkirContactListAdapter(mafkirContactList:List<MafkirContact>, private val interaction: Interaction? = null
+class MafkirContactListAdapter(
+    mafkirContactList: List<MafkirContact>, private val interaction: Interaction? = null
 ) : RecyclerView.Adapter<MafkirContactListAdapter.ViewHolder>() {
     private val mafkirContacts = mutableListOf<MafkirContact>()
 
@@ -50,17 +51,19 @@ class MafkirContactListAdapter(mafkirContactList:List<MafkirContact>, private va
         itemView: View,
         private val interaction: Interaction?
     ) : RecyclerView.ViewHolder(itemView) {
-
-        @Inject
-        lateinit var timeConverter: TimeConverter
+        private val timeConverter = TimeConverter()
 
         fun bind(item: MafkirContact) {
             itemView.txtContact.text = item.contact
-            itemView.txtInterval.text = timeConverter.millisToDays(item.interactionInterval).toString()
-            itemView.txtLastInteraction.text = timeConverter.millisToDate(item.lastInteraction)
-
+            itemView.txtInterval.text = String.format(
+                itemView.resources.getString(R.string.intervalDisplay),
+                timeConverter.millisToDays(item.interactionInterval)
+            )
+            if (System.currentTimeMillis() - item.lastInteraction > item.interactionInterval) {
+                itemView.cardView.setCardBackgroundColor(Color.RED)
+            }
             itemView.setOnClickListener {
-                interaction?.onItemSelected(adapterPosition,item)
+                interaction?.onItemSelected(adapterPosition, item)
             }
         }
 

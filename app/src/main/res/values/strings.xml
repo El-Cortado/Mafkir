@@ -5,4 +5,5 @@
     <string name="save">Save</string>
     <string name="reminderInterval">Reminder Interval</string>
     <string name="contact">Contact</string>
+    <string name="intervalDisplay">"Every %1$s days"</string>
 </resources>

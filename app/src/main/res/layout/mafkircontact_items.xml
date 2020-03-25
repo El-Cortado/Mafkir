@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
@@ -13,6 +14,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginStart="16dp"
+        app:cardBackgroundColor="#8DB600"
         >
 
         <LinearLayout
@@ -34,14 +36,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Interval"
-                android:textSize="18sp"
-                android:textStyle="italic" />
-
-            <TextView
-                android:id="@+id/txtLastInteraction"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Last Interaction"
                 android:textSize="18sp"
                 android:textStyle="italic" />
         </LinearLayout>

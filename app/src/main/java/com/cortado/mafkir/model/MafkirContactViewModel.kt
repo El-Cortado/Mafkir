@@ -15,8 +15,8 @@ class MafkirContactViewModel @Inject constructor(
 
     private val mafkirContacts: LiveData<List<MafkirContact>> = mafkirContactRepository.getAll()
 
-    fun insert(contact: String, interactionInterval: Long) {
-        mafkirContactRepository.insert(contact, interactionInterval)
+    fun insert(contact: String, interactionIntervalDays: Long) {
+        mafkirContactRepository.insert(contact, timeConverter.daysToMillis(interactionIntervalDays))
     }
 
     fun updateInteractionInterval(contact: String, interactionIntervalDays: Long) {
