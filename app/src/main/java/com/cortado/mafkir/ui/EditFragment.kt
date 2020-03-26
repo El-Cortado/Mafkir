@@ -69,6 +69,5 @@ class EditFragment : DaggerFragment() {
             editContact.text.toString(),
             editInterval.value.toLong()
         )
-        (activity as MainActivity).showFloatingButton()
     }
 }

@@ -59,6 +59,5 @@ class AddFragment : DaggerFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         mafkirContactViewModel.insert(addContact.text.toString(), addInterval.value.toLong())
-        (activity as MainActivity).showFloatingButton()
     }
 }
