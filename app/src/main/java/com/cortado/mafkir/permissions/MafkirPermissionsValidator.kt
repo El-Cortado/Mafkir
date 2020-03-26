@@ -32,7 +32,7 @@ class MafkirPermissionsValidator @Inject constructor(private val application: Ap
                     activity,
                     arrayOf(Manifest.permission.READ_CONTACTS),
                     PERMISSION_REQUEST_CONTACT
-                );
+                )
             }
         }
     }
