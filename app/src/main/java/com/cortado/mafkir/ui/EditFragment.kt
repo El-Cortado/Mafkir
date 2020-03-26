@@ -14,13 +14,13 @@ import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_edit.*
 import javax.inject.Inject
 
-class EditFragment: DaggerFragment() {
+class EditFragment : DaggerFragment() {
     private lateinit var mafkirContactViewModel: MafkirContactViewModel
 
     @Inject
     lateinit var viewModelProviderFactory: ViewModelProviderFactory
 
-    lateinit var mafkirContact:MafkirContact
+    lateinit var mafkirContact: MafkirContact
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,7 +65,10 @@ class EditFragment: DaggerFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
 
-        mafkirContactViewModel.updateInteractionInterval(editContact.text.toString(), editInterval.value.toLong())
+        mafkirContactViewModel.updateInteractionInterval(
+            editContact.text.toString(),
+            editInterval.value.toLong()
+        )
         (activity as MainActivity).showFloatingButton()
     }
 }

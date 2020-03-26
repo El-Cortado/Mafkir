@@ -39,7 +39,7 @@ class MainActivity : DaggerAppCompatActivity() {
         }
     }
 
-    private fun onFloatingClicked(contact:String) {
+    private fun onFloatingClicked(contact: String) {
         val navDirection = ListFragmentDirections.actionListFragmentToAddFragment(contact)
         navController.navigate(navDirection)
         fab.hide()

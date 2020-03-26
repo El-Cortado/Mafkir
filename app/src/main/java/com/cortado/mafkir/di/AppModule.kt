@@ -40,14 +40,16 @@ class AppModule {
     }
 
     @Singleton
-    @Provides @Named("User")
+    @Provides
+    @Named("User")
     fun providesNotificationMafkirNotifier(app: Application): MafkirNotifier {
         registerNotificationChannel(app)
         return MafkirNotifier(app, Constants.CHANNEL_ID)
     }
 
     @Singleton
-    @Provides @Named("Silent")
+    @Provides
+    @Named("Silent")
     fun providesSilentNotificationMafkirNotifier(app: Application): MafkirNotifier {
         registerSilentNotificationChannel(app)
         return MafkirNotifier(app, Constants.SILENT_CHANNEL_ID)

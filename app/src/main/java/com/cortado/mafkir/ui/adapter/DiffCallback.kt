@@ -3,7 +3,7 @@ package com.cortado.mafkir.ui.adapter
 import androidx.recyclerview.widget.DiffUtil
 import com.cortado.mafkir.persistence.MafkirContact
 
-class DiffCallback (
+class DiffCallback(
     private val oldList: List<MafkirContact>,
     private val newList: List<MafkirContact>
 ) : DiffUtil.Callback() {

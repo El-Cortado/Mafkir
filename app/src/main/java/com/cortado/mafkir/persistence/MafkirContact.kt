@@ -18,8 +18,7 @@ data class MafkirContact(
         parcel.readString(),
         parcel.readLong(),
         parcel.readLong()
-    ) {
-    }
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(id)

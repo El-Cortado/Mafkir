@@ -19,7 +19,10 @@ class MafkirContactViewModel @Inject constructor(
     }
 
     fun updateInteractionInterval(contact: String, interactionIntervalDays: Long) {
-        mafkirContactRepository.updateInteractionInterval(contact, timeConverter.daysToMillis(interactionIntervalDays))
+        mafkirContactRepository.updateInteractionInterval(
+            contact,
+            timeConverter.daysToMillis(interactionIntervalDays)
+        )
     }
 
     fun delete(contact: String) {
