@@ -51,7 +51,11 @@ class EditFragment : DaggerFragment() {
         setupViewModel()
 
         editButton.setOnClickListener {
-            Navigation.findNavController(requireActivity(), container.id).popBackStack()
+            mafkirContactViewModel.updateInteractionInterval(
+                editContact.text.toString(),
+                editInterval.value.toLong()
+            )
+            Navigation.findNavController(requireView()).popBackStack()
         }
     }
 
@@ -61,14 +65,5 @@ class EditFragment : DaggerFragment() {
                 this,
                 viewModelProviderFactory
             ).get(MafkirContactViewModel::class.java)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-
-        mafkirContactViewModel.updateInteractionInterval(
-            editContact.text.toString(),
-            editInterval.value.toLong()
-        )
     }
 }

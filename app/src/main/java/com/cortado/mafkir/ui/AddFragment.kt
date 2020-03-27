@@ -10,7 +10,6 @@ import com.cortado.mafkir.R
 import com.cortado.mafkir.model.MafkirContactViewModel
 import com.cortado.mafkir.model.ViewModelProviderFactory
 import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_add.*
 import javax.inject.Inject
 
@@ -45,7 +44,8 @@ class AddFragment : DaggerFragment() {
         setupViewModel()
 
         addButton.setOnClickListener {
-            Navigation.findNavController(requireActivity(), container.id).popBackStack()
+            mafkirContactViewModel.insert(addContact.text.toString(), addInterval.value.toLong())
+            Navigation.findNavController(requireView()).popBackStack()
         }
     }
 
@@ -55,10 +55,5 @@ class AddFragment : DaggerFragment() {
                 this,
                 viewModelProviderFactory
             ).get(MafkirContactViewModel::class.java)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        mafkirContactViewModel.insert(addContact.text.toString(), addInterval.value.toLong())
     }
 }
