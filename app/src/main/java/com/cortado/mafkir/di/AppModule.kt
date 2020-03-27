@@ -62,8 +62,8 @@ class AppModule {
             val name = "Mafkir channel"
             val descriptionText = "Mafkir app notification channel"
             val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(Constants.CHANNEL_ID, name, importance).apply {
-                description = descriptionText
+            val channel = NotificationChannel(Constants.CHANNEL_ID, name, importance).also {
+                it.description = descriptionText
             }
 
             // Register the channel with the system
@@ -80,9 +80,9 @@ class AppModule {
             val name = "Mafkir silent channel"
             val descriptionText = "Mafkir persistent service silent channel"
             val importance = NotificationManager.IMPORTANCE_LOW
-            val channel = NotificationChannel(Constants.SILENT_CHANNEL_ID, name, importance).apply {
-                description = descriptionText
-                lockscreenVisibility = Notification.VISIBILITY_PRIVATE
+            val channel = NotificationChannel(Constants.SILENT_CHANNEL_ID, name, importance).also {
+                it.description = descriptionText
+                it.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
             }
 
             // Register the channel with the system

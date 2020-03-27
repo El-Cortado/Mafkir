@@ -10,6 +10,7 @@ import com.cortado.mafkir.R
 import com.cortado.mafkir.model.MafkirContactViewModel
 import com.cortado.mafkir.model.ViewModelProviderFactory
 import dagger.android.support.DaggerFragment
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_add.*
 import javax.inject.Inject
 
@@ -35,16 +36,16 @@ class AddFragment : DaggerFragment() {
             addContact.text = safeArgs.chosenContact
         }
 
-        addInterval.apply {
-            this.minValue = 1
-            this.maxValue = 10
-            this.wrapSelectorWheel = true
+        addInterval.let {
+            it.minValue = 1
+            it.maxValue = 10
+            it.wrapSelectorWheel = true
         }
 
         setupViewModel()
 
         addButton.setOnClickListener {
-            Navigation.findNavController(requireActivity(), R.id.container).popBackStack()
+            Navigation.findNavController(requireActivity(), container.id).popBackStack()
         }
     }
 

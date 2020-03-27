@@ -67,13 +67,13 @@ class ListFragment : DaggerFragment(),
     }
 
     private fun initRecyclerView() {
-        recyclerView.apply {
+        recyclerView.let {
             mafkirContactListAdapter = MafkirContactListAdapter(
                 allMafkirContacts,
-                this@ListFragment
+                this
             )
-            layoutManager = LinearLayoutManager(this@ListFragment.context)
-            adapter = mafkirContactListAdapter
+            it.layoutManager = LinearLayoutManager(this.context)
+            it.adapter = mafkirContactListAdapter
             val swipe = ItemTouchHelper(initSwipeToDelete())
             swipe.attachToRecyclerView(recyclerView)
         }
@@ -126,7 +126,7 @@ class ListFragment : DaggerFragment(),
         startActivityForResult(contactPickerIntent, Constants.CONTACT_PICKER_RESULT)
     }
 
-    private fun onFloatingClicked(contact: String) {
+    private fun onContactPicked(contact: String) {
         val navDirection = ListFragmentDirections.actionListFragmentToAddFragment(contact)
         findNavController().navigate(navDirection)
     }
@@ -140,29 +140,36 @@ class ListFragment : DaggerFragment(),
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 Constants.CONTACT_PICKER_RESULT -> {
-                    data?.data?.apply {
-                        val projection = arrayOf(
-                            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME
-                        )
-                        val cursor =
-                            activity?.applicationContext?.contentResolver?.query(
-                                this, projection,
-                                null, null, null
-                            )
-                        cursor?.apply {
-                            cursor.moveToFirst()
-                            val nameColumnIndex =
-                                cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
-                            val name = cursor.getString(nameColumnIndex)
-                            onFloatingClicked(name)
-                        }
-                        cursor?.close()
+                    getContactDisplayName(data)?.let {
+                        onContactPicked(it)
                     }
                 }
             }
         } else {
             Log.w("Mafkir", "Warning: activity result not ok")
         }
+    }
+
+    private fun getContactDisplayName(data: Intent?): String? {
+        var contactName:String? = null
+
+        val projection = arrayOf(
+            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME
+        )
+
+        val cursor = activity?.applicationContext?.contentResolver?.query(
+            data?.data!!, projection,
+            null, null, null
+        )
+
+        cursor?.also {
+            it.moveToFirst()
+            val nameColumnIndex =
+                it.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
+            contactName = it.getString(nameColumnIndex)
+        }?.close()
+
+        return contactName
     }
 }
 

@@ -11,6 +11,7 @@ import com.cortado.mafkir.model.MafkirContactViewModel
 import com.cortado.mafkir.model.ViewModelProviderFactory
 import com.cortado.mafkir.persistence.MafkirContact
 import dagger.android.support.DaggerFragment
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_edit.*
 import javax.inject.Inject
 
@@ -40,17 +41,17 @@ class EditFragment : DaggerFragment() {
 
         editContact.text = mafkirContact.contact
 
-        editInterval.apply {
-            this.minValue = 1
-            this.maxValue = 10
-            this.wrapSelectorWheel = true
-            this.value = mafkirContact.interactionInterval.toInt()
+        editInterval.let {
+            it.minValue = 1
+            it.maxValue = 10
+            it.wrapSelectorWheel = true
+            it.value = mafkirContact.interactionInterval.toInt()
         }
 
         setupViewModel()
 
         editButton.setOnClickListener {
-            Navigation.findNavController(requireActivity(), R.id.container).popBackStack()
+            Navigation.findNavController(requireActivity(), container.id).popBackStack()
         }
     }
 

@@ -16,9 +16,9 @@ class MainActivity : DaggerAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        mafkirPermissionsValidator.validate(this)
-
         setContentView(R.layout.activity_main)
+
+        mafkirPermissionsValidator.validate(this)
 
         startService(Intent(this, InteractionsService::class.java))
     }

@@ -45,8 +45,8 @@ class InteractionsService : NotificationListenerService() {
         if (sbn.packageName == "com.whatsapp") {
             sbn.notification.extras.getCharSequence(
                 Notification.EXTRA_TITLE
-            )?.toString()?.apply {
-                mafkirContactRepository.updateLastInteraction(this)
+            )?.toString()?.let {
+                mafkirContactRepository.updateLastInteraction(it)
             }
         }
     }
