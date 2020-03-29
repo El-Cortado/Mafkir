@@ -13,7 +13,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.cortado.mafkir.Constants
 import com.cortado.mafkir.R
@@ -26,17 +25,17 @@ import kotlinx.android.synthetic.main.fragment_list.*
 import javax.inject.Inject
 
 
-class ListFragment : DaggerFragment(),
-    MafkirContactListAdapter.Interaction {
+class ListFragment : DaggerFragment() {
 
-    private lateinit var mafkirContactListAdapter: MafkirContactListAdapter
+    private var mafkirContactListAdapter = MafkirContactListAdapter()
 
-    private lateinit var mafkirContactViewModel: MafkirContactViewModel
+    private var allMafkirContacts:List<MafkirContact> = mutableListOf()
 
     @Inject
     lateinit var viewModelProviderFactory: ViewModelProviderFactory
 
-    lateinit var allMafkirContacts: List<MafkirContact>
+    private lateinit var mafkirContactViewModel: MafkirContactViewModel
+
 
 
     override fun onCreateView(
@@ -61,21 +60,16 @@ class ListFragment : DaggerFragment(),
             .observe(viewLifecycleOwner, Observer { lisOfMafkirContacts ->
                 lisOfMafkirContacts?.let {
                     allMafkirContacts = it
-                    mafkirContactListAdapter.swap(it)
+                    mafkirContactListAdapter.submitList(it)
                 }
             })
     }
 
     private fun initRecyclerView() {
         recyclerView.let {
-            mafkirContactListAdapter = MafkirContactListAdapter(
-                allMafkirContacts,
-                this
-            )
-            it.layoutManager = LinearLayoutManager(this.context)
             it.adapter = mafkirContactListAdapter
             val swipe = ItemTouchHelper(initSwipeToDelete())
-            swipe.attachToRecyclerView(recyclerView)
+            swipe.attachToRecyclerView(it)
         }
     }
 
@@ -111,11 +105,6 @@ class ListFragment : DaggerFragment(),
                 Toast.makeText(activity, "Contact tracking Deleted", Toast.LENGTH_SHORT).show()
             }
         }
-    }
-
-    override fun onItemSelected(position: Int, item: MafkirContact) {
-        val navDirection = ListFragmentDirections.actionListFragmentToEditFragment(item)
-        findNavController().navigate(navDirection)
     }
 
     private fun launchContactPicker() {

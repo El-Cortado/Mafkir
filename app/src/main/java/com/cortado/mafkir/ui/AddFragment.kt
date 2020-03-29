@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.navArgs
 import com.cortado.mafkir.R
 import com.cortado.mafkir.model.MafkirContactViewModel
 import com.cortado.mafkir.model.ViewModelProviderFactory
@@ -14,6 +15,8 @@ import kotlinx.android.synthetic.main.fragment_add.*
 import javax.inject.Inject
 
 class AddFragment : DaggerFragment() {
+    private val args: AddFragmentArgs by navArgs()
+
     private lateinit var mafkirContactViewModel: MafkirContactViewModel
 
     @Inject
@@ -30,10 +33,7 @@ class AddFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        arguments?.let {
-            val safeArgs = AddFragmentArgs.fromBundle(it)
-            addContact.text = safeArgs.chosenContact
-        }
+        addContact.text = args.chosenContact
 
         addInterval.let {
             it.minValue = 1

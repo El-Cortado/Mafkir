@@ -6,16 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.navArgs
 import com.cortado.mafkir.R
 import com.cortado.mafkir.model.MafkirContactViewModel
 import com.cortado.mafkir.model.ViewModelProviderFactory
 import com.cortado.mafkir.persistence.MafkirContact
 import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_edit.*
 import javax.inject.Inject
 
 class EditFragment : DaggerFragment() {
+
+    private val args: EditFragmentArgs by navArgs()
+
     private lateinit var mafkirContactViewModel: MafkirContactViewModel
 
     @Inject
@@ -34,10 +37,7 @@ class EditFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        arguments?.let {
-            val safeArgs = EditFragmentArgs.fromBundle(it)
-            mafkirContact = safeArgs.mafkirContact
-        }
+        mafkirContact = args.mafkirContact
 
         editContact.text = mafkirContact.contact
 

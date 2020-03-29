@@ -4,79 +4,56 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.cortado.mafkir.R
+import com.cortado.mafkir.databinding.MafkircontactItemsBinding
 import com.cortado.mafkir.model.TimeConverter
 import com.cortado.mafkir.persistence.MafkirContact
+import com.cortado.mafkir.ui.ListFragmentDirections
 import kotlinx.android.synthetic.main.mafkircontact_items.view.*
 
-class MafkirContactListAdapter(
-    mafkirContactList: List<MafkirContact>, private val interaction: Interaction? = null
-) : RecyclerView.Adapter<MafkirContactListAdapter.ViewHolder>() {
-    private val mafkirContacts = mutableListOf<MafkirContact>()
+class MafkirContactListAdapter() : RecyclerView.Adapter<MafkirContactListAdapter.ViewHolder>() {
 
-    init {
-        mafkirContacts.addAll(mafkirContactList)
-    }
+    private val mafkirContacts = mutableListOf<MafkirContact>()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): MafkirContactListAdapter.ViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.mafkircontact_items, parent, false)
+    ): ViewHolder {
         return ViewHolder(
-            view,
-            interaction
+            MafkircontactItemsBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
         )
     }
 
     override fun getItemCount() = mafkirContacts.size
 
-    override fun onBindViewHolder(holder: MafkirContactListAdapter.ViewHolder, position: Int) {
-        holder.bind(item = mafkirContacts[position])
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(mafkirContacts[position])
     }
 
-    fun swap(newMafkirContacts: List<MafkirContact>) {
-        val diffCallback = DiffCallback(mafkirContacts, newMafkirContacts)
-        val diffResult = DiffUtil.calculateDiff(diffCallback)
-
+    fun submitList(newMafkirContacts: List<MafkirContact>) {
         mafkirContacts.clear()
         mafkirContacts.addAll(newMafkirContacts)
-        diffResult.dispatchUpdatesTo(this)
+        notifyDataSetChanged()
     }
 
-    class ViewHolder(
-        itemView: View,
-        private val interaction: Interaction?
-    ) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(private val binding: MafkircontactItemsBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         private val timeConverter = TimeConverter()
 
         fun bind(item: MafkirContact) {
-            itemView.txtContact.text = item.contact
-            itemView.txtInterval.text =
-                formatIntervalText(timeConverter.millisToDays(item.interactionInterval))
+            binding.mafkirContact = item
             if (System.currentTimeMillis() - item.lastInteraction > item.interactionInterval) {
                 itemView.cardView.setCardBackgroundColor(Color.RED)
             }
-            itemView.setOnClickListener {
-                interaction?.onItemSelected(adapterPosition, item)
+            binding.clickListener = View.OnClickListener {
+                val navDirection = ListFragmentDirections.actionListFragmentToEditFragment(item)
+                it.findNavController().navigate(navDirection)
             }
         }
-
-        private fun formatIntervalText(intervalDays: Long): String {
-            if (intervalDays > 1) {
-                return String.format(
-                    itemView.resources.getString(R.string.intervalDisplayDays), intervalDays
-                )
-            }
-            return itemView.resources.getString(R.string.intervalDisplayDay)
-        }
-
-    }
-
-    interface Interaction {
-        fun onItemSelected(position: Int, item: MafkirContact)
     }
 }

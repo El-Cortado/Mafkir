@@ -35,12 +35,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
+    dataBinding {
+        enabled = true
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {
@@ -82,7 +86,7 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:$recycler_view"
 
     //Material library
-    implementation 'com.google.android.material:material:1.1.0'
+    implementation 'com.google.android.material:material:1.2.0-alpha05'
 
     //Navigation Component
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
