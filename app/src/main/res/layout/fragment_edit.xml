@@ -41,6 +41,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:text="@{Long.toString(mafkirContact.interactionInterval)}"
+                    android:hint="@{Long.toString(mafkirContact.interactionInterval)}"
                     android:layout_marginTop="10dp"
                     android:autofillHints="1" />
 
