@@ -18,6 +18,7 @@
             android:id="@+id/editCardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:transitionName="@{@string/edit_transition_name(mafkirContact.id)}"
             android:layout_margin="16dp">
 
             <LinearLayout
@@ -31,7 +32,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@{mafkirContact.contact}"
-                    android:transitionName="@{@string/transition_name(mafkirContact.id)}"
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
@@ -41,7 +41,6 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:text="@{Long.toString(mafkirContact.interactionInterval)}"
-                    android:transitionName="@{@string/transition_interval(mafkirContact.id)}"
                     android:layout_marginTop="10dp"
                     android:autofillHints="1" />
 

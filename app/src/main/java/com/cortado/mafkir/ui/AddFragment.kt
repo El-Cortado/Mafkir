@@ -10,6 +10,7 @@ import androidx.navigation.fragment.navArgs
 import com.cortado.mafkir.databinding.FragmentAddBinding
 import com.cortado.mafkir.model.MafkirContactViewModel
 import com.cortado.mafkir.model.ViewModelProviderFactory
+import com.google.android.material.transition.MaterialContainerTransform
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_add.*
 import javax.inject.Inject
@@ -23,6 +24,11 @@ class AddFragment : DaggerFragment() {
 
     @Inject
     lateinit var viewModelProviderFactory: ViewModelProviderFactory
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedElementEnterTransition = MaterialContainerTransform(requireContext())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -17,6 +17,7 @@
             android:id="@+id/addCardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:transitionName="@{@string/add_transition_name}"
             android:layout_margin="16dp">
 
             <LinearLayout
@@ -39,6 +40,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:layout_marginTop="10dp"
+                    android:hint="@string/interval_hint"
                     android:autofillHints="1" />
 
                 <Button

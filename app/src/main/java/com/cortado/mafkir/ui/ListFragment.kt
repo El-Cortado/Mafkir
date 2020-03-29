@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -20,6 +21,8 @@ import com.cortado.mafkir.model.MafkirContactViewModel
 import com.cortado.mafkir.model.ViewModelProviderFactory
 import com.cortado.mafkir.persistence.MafkirContact
 import com.cortado.mafkir.ui.adapter.MafkirContactListAdapter
+import com.cortado.mafkir.ui.extension.toTransitionGroup
+import com.cortado.mafkir.ui.extension.waitForTransition
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_list.*
 import javax.inject.Inject
@@ -56,6 +59,7 @@ class ListFragment : DaggerFragment() {
         setupViewModel()
         initRecyclerView()
         observerLiveData()
+        waitForTransition(binding.recyclerView)
     }
 
     private fun observerLiveData() {
@@ -119,8 +123,9 @@ class ListFragment : DaggerFragment() {
     }
 
     private fun onContactPicked(contact: String) {
+        val extras =  FragmentNavigatorExtras(binding.fab.toTransitionGroup())
         val navDirection = ListFragmentDirections.actionListFragmentToAddFragment(contact)
-        findNavController().navigate(navDirection)
+        findNavController().navigate(navDirection, extras)
     }
 
     override fun onActivityResult(

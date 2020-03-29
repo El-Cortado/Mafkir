@@ -54,10 +54,7 @@ class MafkirContactListAdapter() : RecyclerView.Adapter<MafkirContactListAdapter
             }
             binding.clickListener = View.OnClickListener {
                 val navDirection = ListFragmentDirections.actionListFragmentToEditFragment(item)
-                val extras = FragmentNavigatorExtras(
-                    binding.itemContactName.toTransitionGroup(),
-                    binding.itemInterval.toTransitionGroup()
-                )
+                val extras =  FragmentNavigatorExtras(binding.root.toTransitionGroup())
                 it.findNavController().navigate(navDirection, extras)
             }
         }
