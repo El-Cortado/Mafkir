@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
-import com.cortado.mafkir.R
+import com.cortado.mafkir.databinding.FragmentAddBinding
 import com.cortado.mafkir.model.MafkirContactViewModel
 import com.cortado.mafkir.model.ViewModelProviderFactory
 import dagger.android.support.DaggerFragment
@@ -15,6 +15,8 @@ import kotlinx.android.synthetic.main.fragment_add.*
 import javax.inject.Inject
 
 class AddFragment : DaggerFragment() {
+    private lateinit var binding: FragmentAddBinding
+
     private val args: AddFragmentArgs by navArgs()
 
     private lateinit var mafkirContactViewModel: MafkirContactViewModel
@@ -27,24 +29,22 @@ class AddFragment : DaggerFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_add, container, false)
+        binding = FragmentAddBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        addContact.text = args.chosenContact
-
-        addInterval.let {
-            it.minValue = 1
-            it.maxValue = 10
-            it.wrapSelectorWheel = true
-        }
+        binding.chosenContact = args.chosenContact
 
         setupViewModel()
 
         addButton.setOnClickListener {
-            mafkirContactViewModel.insert(addContact.text.toString(), addInterval.value.toLong())
+            mafkirContactViewModel.insert(
+                binding.addContact.text.toString(),
+                binding.addInterval.text.toString().toLong()
+            )
             Navigation.findNavController(requireView()).popBackStack()
         }
     }

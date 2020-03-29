@@ -42,7 +42,8 @@
                     android:inputType="number"
                     android:text="@{Long.toString(mafkirContact.interactionInterval)}"
                     android:transitionName="@{@string/transition_interval(mafkirContact.id)}"
-                    android:layout_marginTop="10dp" />
+                    android:layout_marginTop="10dp"
+                    android:autofillHints="1" />
 
                 <Button
                     android:id="@+id/editButton"

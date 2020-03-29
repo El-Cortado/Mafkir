@@ -15,18 +15,19 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.cortado.mafkir.Constants
-import com.cortado.mafkir.R
+import com.cortado.mafkir.databinding.FragmentListBinding
 import com.cortado.mafkir.model.MafkirContactViewModel
 import com.cortado.mafkir.model.ViewModelProviderFactory
 import com.cortado.mafkir.persistence.MafkirContact
 import com.cortado.mafkir.ui.adapter.MafkirContactListAdapter
-import com.cortado.mafkir.ui.extension.waitForTransition
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_list.*
 import javax.inject.Inject
 
 
 class ListFragment : DaggerFragment() {
+
+    private lateinit var binding: FragmentListBinding
 
     private var mafkirContactListAdapter = MafkirContactListAdapter()
 
@@ -45,7 +46,8 @@ class ListFragment : DaggerFragment() {
         savedInstanceState: Bundle?
     ): View? {
         allMafkirContacts = mutableListOf()
-        return inflater.inflate(R.layout.fragment_list, container, false)
+        binding = FragmentListBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -67,7 +69,7 @@ class ListFragment : DaggerFragment() {
     }
 
     private fun initRecyclerView() {
-        recyclerView.let {
+        binding.recyclerView.let {
             it.adapter = mafkirContactListAdapter
             val swipe = ItemTouchHelper(initSwipeToDelete())
             swipe.attachToRecyclerView(it)
