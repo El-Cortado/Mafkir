@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
-import com.cortado.mafkir.R
+import androidx.transition.TransitionInflater
+import com.cortado.mafkir.databinding.FragmentEditBinding
 import com.cortado.mafkir.model.MafkirContactViewModel
 import com.cortado.mafkir.model.ViewModelProviderFactory
-import com.cortado.mafkir.persistence.MafkirContact
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_edit.*
 import javax.inject.Inject
@@ -19,44 +19,44 @@ class EditFragment : DaggerFragment() {
 
     private val args: EditFragmentArgs by navArgs()
 
+    private lateinit var binding: FragmentEditBinding
+
     private lateinit var mafkirContactViewModel: MafkirContactViewModel
 
     @Inject
     lateinit var viewModelProviderFactory: ViewModelProviderFactory
 
-    lateinit var mafkirContact: MafkirContact
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedElementEnterTransition =
+            TransitionInflater.from(context).inflateTransition(android.R.transition.move)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_edit, container, false)
+        binding = FragmentEditBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mafkirContact = args.mafkirContact
-
-        editContact.text = mafkirContact.contact
-
-        editInterval.let {
-            it.minValue = 1
-            it.maxValue = 10
-            it.wrapSelectorWheel = true
-            it.value = mafkirContact.interactionInterval.toInt()
-        }
+        binding.mafkirContact = args.mafkirContact
 
         setupViewModel()
 
-        editButton.setOnClickListener {
+        binding.clickListener = View.OnClickListener {
             mafkirContactViewModel.updateInteractionInterval(
                 editContact.text.toString(),
-                editInterval.value.toLong()
+                editInterval.text.toString().toLong()
             )
             Navigation.findNavController(requireView()).popBackStack()
         }
+
+        binding.executePendingBindings()
     }
 
     private fun setupViewModel() {

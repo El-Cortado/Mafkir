@@ -32,19 +32,21 @@
             android:padding="16dp">
 
             <TextView
-                android:id="@+id/txtContact"
+                android:id="@+id/itemContactName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@{mafkirContact.contact}"
+                android:transitionName="@{@string/transition_name(mafkirContact.id)}"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/txtInterval"
+                android:id="@+id/itemInterval"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@{@string/intervalDisplayDays(mafkirContact.interactionInterval)}"
                 android:textSize="18sp"
+                android:transitionName="@{@string/transition_interval(mafkirContact.id)}"
                 android:textStyle="italic" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>

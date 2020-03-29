@@ -5,11 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.RecyclerView
 import com.cortado.mafkir.databinding.MafkircontactItemsBinding
 import com.cortado.mafkir.model.TimeConverter
 import com.cortado.mafkir.persistence.MafkirContact
 import com.cortado.mafkir.ui.ListFragmentDirections
+import com.cortado.mafkir.ui.extension.toTransitionGroup
 import kotlinx.android.synthetic.main.mafkircontact_items.view.*
 
 class MafkirContactListAdapter() : RecyclerView.Adapter<MafkirContactListAdapter.ViewHolder>() {
@@ -52,7 +54,11 @@ class MafkirContactListAdapter() : RecyclerView.Adapter<MafkirContactListAdapter
             }
             binding.clickListener = View.OnClickListener {
                 val navDirection = ListFragmentDirections.actionListFragmentToEditFragment(item)
-                it.findNavController().navigate(navDirection)
+                val extras = FragmentNavigatorExtras(
+                    binding.itemContactName.toTransitionGroup(),
+                    binding.itemInterval.toTransitionGroup()
+                )
+                it.findNavController().navigate(navDirection, extras)
             }
         }
     }
