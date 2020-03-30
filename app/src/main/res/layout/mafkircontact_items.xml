@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable
+            name="timeConverter"
+            type="com.cortado.mafkir.model.TimeConverter" />
         <variable
             name="clickListener"
             type="android.view.View.OnClickListener" />
-
         <variable
             name="mafkirContact"
             type="com.cortado.mafkir.persistence.MafkirContact" />
@@ -44,7 +44,7 @@
                 android:id="@+id/itemInterval"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{@string/intervalDisplayDays(mafkirContact.interactionInterval)}"
+                android:text="@{@string/intervalDisplayDays(timeConverter.millisToDays(mafkirContact.interactionIntervalMillis))}"
                 android:textSize="18sp"
                 android:textStyle="italic" />
         </LinearLayout>

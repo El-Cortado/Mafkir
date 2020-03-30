@@ -9,6 +9,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.cortado.mafkir.databinding.FragmentAddBinding
 import com.cortado.mafkir.model.MafkirContactViewModel
+import com.cortado.mafkir.model.TimeConverter
 import com.cortado.mafkir.model.ViewModelProviderFactory
 import com.google.android.material.transition.MaterialContainerTransform
 import dagger.android.support.DaggerFragment
@@ -21,6 +22,9 @@ class AddFragment : DaggerFragment() {
     private val args: AddFragmentArgs by navArgs()
 
     private lateinit var mafkirContactViewModel: MafkirContactViewModel
+
+    @Inject
+    lateinit var timeConverter: TimeConverter
 
     @Inject
     lateinit var viewModelProviderFactory: ViewModelProviderFactory
@@ -49,7 +53,7 @@ class AddFragment : DaggerFragment() {
         addButton.setOnClickListener {
             mafkirContactViewModel.insert(
                 binding.addContact.text.toString(),
-                binding.addInterval.text.toString().toLong()
+                timeConverter.daysToMillis(binding.addInterval.text.toString().toLong())
             )
             Navigation.findNavController(requireView()).popBackStack()
         }

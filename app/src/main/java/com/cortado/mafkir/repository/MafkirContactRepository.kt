@@ -11,13 +11,13 @@ import javax.inject.Inject
 class MafkirContactRepository @Inject constructor(private val mafkirContactDao: MafkirContactDao) {
     private val allContacts = mafkirContactDao.getAll()
 
-    fun insert(contact: String, interactionIntervalDays: Long) {
+    fun insert(contact: String, interactionIntervalMillis: Long) {
         CoroutineScope(Dispatchers.IO).launch {
             mafkirContactDao.insert(
                 MafkirContact(
                     0,
                     contact,
-                    interactionIntervalDays,
+                    interactionIntervalMillis,
                     System.currentTimeMillis()
                 )
             )
@@ -30,9 +30,9 @@ class MafkirContactRepository @Inject constructor(private val mafkirContactDao: 
         }
     }
 
-    fun updateInteractionInterval(contact: String, interactionIntervalDays: Long) {
+    fun updateInteractionInterval(contact: String, interactionIntervalMillis: Long) {
         CoroutineScope(Dispatchers.IO).launch {
-            mafkirContactDao.updateInteractionInterval(contact, interactionIntervalDays)
+            mafkirContactDao.updateInteractionInterval(contact, interactionIntervalMillis)
         }
     }
 

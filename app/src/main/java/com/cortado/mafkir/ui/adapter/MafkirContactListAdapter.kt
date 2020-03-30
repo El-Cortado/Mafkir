@@ -49,7 +49,8 @@ class MafkirContactListAdapter() : RecyclerView.Adapter<MafkirContactListAdapter
 
         fun bind(item: MafkirContact) {
             binding.mafkirContact = item
-            if (System.currentTimeMillis() - item.lastInteraction > timeConverter.daysToMillis(item.interactionInterval)) {
+            binding.timeConverter = timeConverter
+            if (System.currentTimeMillis() - item.lastInteractionMillis > item.interactionIntervalMillis) {
                 itemView.cardView.setCardBackgroundColor(Color.RED)
             }
             binding.clickListener = View.OnClickListener {

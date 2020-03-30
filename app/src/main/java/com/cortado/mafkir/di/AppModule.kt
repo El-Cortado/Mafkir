@@ -24,7 +24,9 @@ class AppModule {
     @Singleton
     @Provides
     fun providesMafkirDatabase(app: Application): MafkirDatabase {
-        return Room.databaseBuilder(app, MafkirDatabase::class.java, "MafkirDatabase").build()
+        return Room.databaseBuilder(app, MafkirDatabase::class.java, "MafkirDatabase")
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
     @Singleton

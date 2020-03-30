@@ -7,13 +7,12 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
-import androidx.transition.TransitionInflater
 import com.cortado.mafkir.databinding.FragmentEditBinding
 import com.cortado.mafkir.model.MafkirContactViewModel
+import com.cortado.mafkir.model.TimeConverter
 import com.cortado.mafkir.model.ViewModelProviderFactory
 import com.google.android.material.transition.MaterialContainerTransform
 import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.fragment_edit.*
 import javax.inject.Inject
 
 class EditFragment : DaggerFragment() {
@@ -23,6 +22,9 @@ class EditFragment : DaggerFragment() {
     private lateinit var binding: FragmentEditBinding
 
     private lateinit var mafkirContactViewModel: MafkirContactViewModel
+
+    @Inject
+    lateinit var timeConverter: TimeConverter
 
     @Inject
     lateinit var viewModelProviderFactory: ViewModelProviderFactory
@@ -45,13 +47,14 @@ class EditFragment : DaggerFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.mafkirContact = args.mafkirContact
+        binding.timeConverter = timeConverter
 
         setupViewModel()
 
         binding.clickListener = View.OnClickListener {
             mafkirContactViewModel.updateInteractionInterval(
-                editContact.text.toString(),
-                editInterval.text.toString().toLong()
+                binding.editContact.text.toString(),
+                timeConverter.daysToMillis(binding.editInterval.text.toString().toLong())
             )
             Navigation.findNavController(requireView()).popBackStack()
         }
