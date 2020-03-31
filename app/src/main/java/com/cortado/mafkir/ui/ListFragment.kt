@@ -109,7 +109,7 @@ class ListFragment : DaggerFragment() {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val position = viewHolder.adapterPosition
                 mafkirContactViewModel.delete(allMafkirContacts[position].contact)
-                Toast.makeText(activity, "Contact tracking Deleted", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, "Reminder deleted", Toast.LENGTH_SHORT).show()
             }
         }
     }
