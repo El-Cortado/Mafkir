@@ -67,7 +67,7 @@ class ListFragment : DaggerFragment() {
             .observe(viewLifecycleOwner, Observer { lisOfMafkirContacts ->
                 lisOfMafkirContacts?.let {
                     allMafkirContacts = it
-                    mafkirContactListAdapter.submitList(it)
+                    mafkirContactListAdapter.swap(it)
                 }
             })
     }

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.cortado.mafkir.databinding.MafkircontactItemsBinding
 import com.cortado.mafkir.model.TimeConverter
@@ -14,7 +15,7 @@ import com.cortado.mafkir.ui.ListFragmentDirections
 import com.cortado.mafkir.ui.extension.toTransitionGroup
 import kotlinx.android.synthetic.main.mafkircontact_items.view.*
 
-class MafkirContactListAdapter() : RecyclerView.Adapter<MafkirContactListAdapter.ViewHolder>() {
+class MafkirContactListAdapter : RecyclerView.Adapter<MafkirContactListAdapter.ViewHolder>() {
 
     private val mafkirContacts = mutableListOf<MafkirContact>()
 
@@ -37,10 +38,13 @@ class MafkirContactListAdapter() : RecyclerView.Adapter<MafkirContactListAdapter
         holder.bind(mafkirContacts[position])
     }
 
-    fun submitList(newMafkirContacts: List<MafkirContact>) {
+    fun swap(newMafkirContacts: List<MafkirContact>) {
+        val diffCallback = DiffCallback(mafkirContacts, newMafkirContacts)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
+
         mafkirContacts.clear()
         mafkirContacts.addAll(newMafkirContacts)
-        notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this)
     }
 
     class ViewHolder(private val binding: MafkircontactItemsBinding) :
