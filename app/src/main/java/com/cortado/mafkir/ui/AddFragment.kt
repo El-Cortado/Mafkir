@@ -13,7 +13,6 @@ import com.cortado.mafkir.model.TimeConverter
 import com.cortado.mafkir.model.ViewModelProviderFactory
 import com.google.android.material.transition.MaterialContainerTransform
 import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.fragment_add.*
 import javax.inject.Inject
 
 class AddFragment : DaggerFragment() {
@@ -50,7 +49,7 @@ class AddFragment : DaggerFragment() {
 
         setupViewModel()
 
-        addButton.setOnClickListener {
+        binding.clickListener = View.OnClickListener {
             mafkirContactViewModel.insert(
                 binding.addContact.text.toString(),
                 timeConverter.daysToMillis(binding.addInterval.text.toString().toLong())

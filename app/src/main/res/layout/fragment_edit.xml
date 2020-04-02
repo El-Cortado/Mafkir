@@ -5,8 +5,8 @@
             name="clickListener"
             type="android.view.View.OnClickListener" />
         <variable
-            name="timeConverter"
-            type="com.cortado.mafkir.model.TimeConverter" />
+            name="timeInterval"
+            type="String" />
         <variable
             name="mafkirContact"
             type="com.cortado.mafkir.persistence.MafkirContact" />
@@ -43,8 +43,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number"
-                    android:text="@{Long.toString(timeConverter.millisToDays(mafkirContact.interactionIntervalMillis))}"
-                    android:hint="@{Long.toString(timeConverter.millisToDays(mafkirContact.interactionIntervalMillis))}"
+                    android:text="@{timeInterval}"
+                    android:hint="@{timeInterval}"
                     android:layout_marginTop="10dp"
                     android:autofillHints="1" />
 

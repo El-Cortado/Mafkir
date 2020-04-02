@@ -47,7 +47,8 @@ class EditFragment : DaggerFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.mafkirContact = args.mafkirContact
-        binding.timeConverter = timeConverter
+        binding.timeInterval =
+            timeConverter.millisToDays(args.mafkirContact.interactionIntervalMillis).toString()
 
         setupViewModel()
 
