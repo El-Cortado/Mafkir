@@ -1,12 +1,10 @@
-package com.cortado.mafkir
+package com.cortado.mafkir.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import com.cortado.mafkir.model.MafkirContactViewModel
+import com.cortado.mafkir.R
 import com.cortado.mafkir.notifications.InteractionsService
 import com.cortado.mafkir.permissions.MafkirPermissionsValidator
-import com.cortado.mafkir.model.ViewModelProviderFactory
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
 
@@ -18,10 +16,10 @@ class MainActivity : DaggerAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        setContentView(R.layout.activity_main)
+
         mafkirPermissionsValidator.validate(this)
 
         startService(Intent(this, InteractionsService::class.java))
-
-        setContentView(R.layout.activity_main)
     }
 }

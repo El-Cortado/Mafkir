@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Mafkir</string>
     <string name="service_name">MafkirInteractionsService</string>
-    <string name="button">test notification</string>
+     <string name="save">Save</string>
+    <string name="contact">Contact</string>
+    <string name="intervalDisplayDays">"Every %d days"</string>
+    <string name="interval_hint">Interval in days</string>
 </resources>

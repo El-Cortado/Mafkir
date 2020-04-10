@@ -8,8 +8,8 @@ import com.cortado.mafkir.R
 
 class MafkirNotifier(application: Application, channelId: String) {
 
-    private val mApplication = application;
-    private val mChannelId = channelId;
+    private val mApplication = application
+    private val mChannelId = channelId
 
     fun build(title: String, body: String, onGoing: Boolean): Notification {
         return NotificationCompat.Builder(mApplication, mChannelId)

@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-
+apply plugin: "androidx.navigation.safeargs.kotlin"
 
 android {
     compileSdkVersion 28
@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.mafkir"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -35,19 +35,23 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
+    dataBinding {
+        enabled = true
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {
-
     def room_version = "2.2.5"
     def lifecycle_version = "2.2.0"
     def dagger_version = "2.27"
+    def recycler_view = "1.1.0"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -77,6 +81,16 @@ dependencies {
 
     //Coroutines LiveData Scope
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
+
+    //RecyclerView
+    implementation "androidx.recyclerview:recyclerview:$recycler_view"
+
+    //Material library
+    implementation 'com.google.android.material:material:1.2.0-alpha05'
+
+    //Navigation Component
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'org.mockito:mockito-android:3.3.3'

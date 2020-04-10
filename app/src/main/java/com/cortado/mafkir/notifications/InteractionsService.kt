@@ -4,6 +4,7 @@ import android.app.Notification
 import android.content.Intent
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
+import android.util.Log
 import com.cortado.mafkir.repository.MafkirContactRepository
 import dagger.android.AndroidInjection
 import javax.inject.Inject
@@ -40,11 +41,12 @@ class InteractionsService : NotificationListenerService() {
 
     override fun onNotificationPosted(sbn: StatusBarNotification) {
         // TODO: extract to subscribers
+        Log.i("Mafkir", "Received notification")
         if (sbn.packageName == "com.whatsapp") {
             sbn.notification.extras.getCharSequence(
                 Notification.EXTRA_TITLE
-            )?.toString()?.apply {
-                mafkirContactRepository.updateLastInteraction(this)
+            )?.toString()?.let {
+                mafkirContactRepository.updateLastInteraction(it)
             }
         }
     }

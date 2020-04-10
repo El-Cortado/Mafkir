@@ -9,13 +9,15 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MafkirContactRepository @Inject constructor(private val mafkirContactDao: MafkirContactDao) {
-    fun insert(contact: String, interactionInterval: Long) {
+    private val allContacts = mafkirContactDao.getAll()
+
+    fun insert(contact: String, interactionIntervalMillis: Long) {
         CoroutineScope(Dispatchers.IO).launch {
             mafkirContactDao.insert(
                 MafkirContact(
                     0,
                     contact,
-                    interactionInterval,
+                    interactionIntervalMillis,
                     System.currentTimeMillis()
                 )
             )
@@ -28,9 +30,9 @@ class MafkirContactRepository @Inject constructor(private val mafkirContactDao: 
         }
     }
 
-    fun updateInteractionInterval(contact: String, interactionInterval: Long) {
+    fun updateInteractionInterval(contact: String, interactionIntervalMillis: Long) {
         CoroutineScope(Dispatchers.IO).launch {
-            mafkirContactDao.updateInteractionInterval(contact, interactionInterval)
+            mafkirContactDao.updateInteractionInterval(contact, interactionIntervalMillis)
         }
     }
 
@@ -41,6 +43,6 @@ class MafkirContactRepository @Inject constructor(private val mafkirContactDao: 
     }
 
     fun getAll(): LiveData<List<MafkirContact>> {
-        return mafkirContactDao.getAll()
+        return allContacts
     }
 }

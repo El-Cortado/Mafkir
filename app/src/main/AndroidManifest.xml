@@ -4,6 +4,8 @@
     package="com.cortado.mafkir">
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
 
     <application
         android:name="com.cortado.mafkir.MafkirApplication"
@@ -33,7 +35,7 @@
             </intent-filter>
         </service>
 
-        <activity android:name="com.cortado.mafkir.MainActivity">
+        <activity android:name="com.cortado.mafkir.ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

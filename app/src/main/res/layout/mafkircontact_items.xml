@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="timeConverter"
+            type="com.cortado.mafkir.model.TimeConverter" />
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
+        <variable
+            name="mafkirContact"
+            type="com.cortado.mafkir.persistence.MafkirContact" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:transitionName="@{@string/edit_transition_name(mafkirContact.id)}"
+        android:onClick="@{clickListener}"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/itemContactName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{mafkirContact.contact}"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/itemInterval"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{@string/intervalDisplayDays(timeConverter.millisToDays(mafkirContact.interactionIntervalMillis))}"
+                android:textSize="18sp"
+                android:textStyle="italic" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</layout>
