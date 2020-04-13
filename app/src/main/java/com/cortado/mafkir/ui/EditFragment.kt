@@ -1,16 +1,16 @@
 package com.cortado.mafkir.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
+import com.cortado.mafkir.R
 import com.cortado.mafkir.databinding.FragmentEditBinding
 import com.cortado.mafkir.model.MafkirContactViewModel
 import com.cortado.mafkir.model.TimeConverter
 import com.cortado.mafkir.model.ViewModelProviderFactory
+import com.cortado.mafkir.ui.actionbar.ActionBarController
 import com.google.android.material.transition.MaterialContainerTransform
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
@@ -29,6 +29,9 @@ class EditFragment : DaggerFragment() {
     @Inject
     lateinit var viewModelProviderFactory: ViewModelProviderFactory
 
+    @Inject
+    lateinit var actionBarController: ActionBarController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedElementEnterTransition = MaterialContainerTransform(requireContext())
@@ -46,21 +49,44 @@ class EditFragment : DaggerFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setHasOptionsMenu(true)
+
         binding.mafkirContact = args.mafkirContact
         binding.timeInterval =
             timeConverter.millisToDays(args.mafkirContact.interactionIntervalMillis).toString()
 
         setupViewModel()
 
-        binding.clickListener = View.OnClickListener {
-            mafkirContactViewModel.updateInteractionInterval(
-                binding.editContact.text.toString(),
-                timeConverter.daysToMillis(binding.editInterval.text.toString().toLong())
-            )
-            Navigation.findNavController(requireView()).popBackStack()
-        }
-
         binding.executePendingBindings()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.edit_options, menu)
+        actionBarController.showBack(this)
+        actionBarController.setHeadline(this, "Edit Reminder")
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_accept -> {
+                mafkirContactViewModel.updateInteractionInterval(
+                    binding.editContact.text.toString(),
+                    timeConverter.daysToMillis(binding.editInterval.text.toString().toLong())
+                )
+                Navigation.findNavController(requireView()).popBackStack()
+                activity?.currentFocus?.clearFocus()
+                true
+            }
+            R.id.action_delete -> {
+                mafkirContactViewModel.delete(
+                    binding.editContact.text.toString()
+                )
+                Navigation.findNavController(requireView()).popBackStack()
+                activity?.currentFocus?.clearFocus()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun setupViewModel() {

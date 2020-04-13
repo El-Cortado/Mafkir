@@ -13,6 +13,7 @@ import com.cortado.mafkir.permissions.MafkirPermissionsValidator
 import com.cortado.mafkir.persistence.MafkirContactDao
 import com.cortado.mafkir.persistence.MafkirDatabase
 import com.cortado.mafkir.repository.MafkirContactRepository
+import com.cortado.mafkir.ui.actionbar.ActionBarController
 import dagger.Module
 import dagger.Provides
 import javax.inject.Named
@@ -98,5 +99,11 @@ class AppModule {
     @Provides
     fun providesNotificationMafkirPermissionsValidator(app: Application): MafkirPermissionsValidator {
         return MafkirPermissionsValidator(app)
+    }
+
+    @Singleton
+    @Provides
+    fun providesActionBarController(): ActionBarController {
+        return ActionBarController()
     }
 }

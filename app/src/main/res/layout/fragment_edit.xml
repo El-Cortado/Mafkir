@@ -2,9 +2,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
-            name="clickListener"
-            type="android.view.View.OnClickListener" />
-        <variable
             name="timeInterval"
             type="String" />
         <variable
@@ -47,16 +44,6 @@
                     android:hint="@{timeInterval}"
                     android:layout_marginTop="10dp"
                     android:autofillHints="1" />
-
-                <Button
-                    android:id="@+id/editButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="32dp"
-                    android:background="#f0f0f0"
-                    android:onClick="@{clickListener}"
-                    android:text="@string/save" />
             </LinearLayout>
 
 
