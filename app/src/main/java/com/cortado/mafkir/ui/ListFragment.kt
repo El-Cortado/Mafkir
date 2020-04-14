@@ -134,7 +134,7 @@ class ListFragment : DaggerFragment() {
 
     private fun onContactPicked(contact: String) {
         val extras =  FragmentNavigatorExtras(binding.fab.toTransitionGroup())
-        val navDirection = ListFragmentDirections.actionListFragmentToAddFragment(contact)
+        val navDirection = ListFragmentDirections.actionListFragmentToEditFragment(contact, false, null)
         findNavController().navigate(navDirection, extras)
     }
 

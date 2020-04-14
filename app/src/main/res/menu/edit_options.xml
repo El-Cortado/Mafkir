@@ -9,7 +9,7 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/action_accept"
+        android:id="@+id/action_accept_edit"
         android:icon="@drawable/accept_icon"
         android:title="@string/accept"
         app:showAsAction="ifRoom" />

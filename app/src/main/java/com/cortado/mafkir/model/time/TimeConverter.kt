@@ -1,4 +1,4 @@
-package com.cortado.mafkir.model
+package com.cortado.mafkir.model.time
 
 import java.text.DateFormat.getDateTimeInstance
 import java.util.*

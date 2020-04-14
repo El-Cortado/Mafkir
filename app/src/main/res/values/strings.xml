@@ -13,4 +13,5 @@
     <string name="interval">interval</string>
     <string name="_1">1</string>
     <string name="at">AT</string>
+    <string name="timeOfDayFormat">%d:%02d</string>
 </resources>

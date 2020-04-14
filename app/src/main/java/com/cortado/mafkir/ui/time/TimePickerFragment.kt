@@ -1,4 +1,4 @@
-package com.cortado.mafkir.ui.picker
+package com.cortado.mafkir.ui.time
 
 import android.app.Dialog
 import android.app.TimePickerDialog

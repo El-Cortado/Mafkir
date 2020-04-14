@@ -9,7 +9,7 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.cortado.mafkir.databinding.MafkircontactItemsBinding
-import com.cortado.mafkir.model.TimeConverter
+import com.cortado.mafkir.model.time.TimeConverter
 import com.cortado.mafkir.persistence.MafkirContact
 import com.cortado.mafkir.ui.ListFragmentDirections
 import com.cortado.mafkir.ui.extension.toTransitionGroup
@@ -54,12 +54,16 @@ class MafkirContactListAdapter : RecyclerView.Adapter<MafkirContactListAdapter.V
         fun bind(item: MafkirContact) {
             binding.mafkirContact = item
             binding.timeConverter = timeConverter
-            if (System.currentTimeMillis() - item.lastInteractionMillis > item.interactionIntervalMillis) {
+            if (System.currentTimeMillis() - item.lastInteractionMillis > item.interval.interval) {
                 itemView.cardView.setCardBackgroundColor(Color.RED)
             }
             binding.clickListener = View.OnClickListener {
-                val navDirection = ListFragmentDirections.actionListFragmentToEditFragment(item)
-                val extras =  FragmentNavigatorExtras(binding.root.toTransitionGroup())
+                val navDirection = ListFragmentDirections.actionListFragmentToEditFragment(
+                    item.contact,
+                    true,
+                    item
+                )
+                val extras = FragmentNavigatorExtras(binding.root.toTransitionGroup())
                 it.findNavController().navigate(navDirection, extras)
             }
         }
