@@ -7,7 +7,6 @@ import android.provider.ContactsContract
 import android.util.Log
 import android.view.*
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.FragmentNavigatorExtras
@@ -85,7 +84,7 @@ class ListFragment : DaggerFragment() {
     private fun initRecyclerView() {
         binding.recyclerView.let {
             it.adapter = mafkirContactListAdapter
-            val swipe = ItemTouchHelper(initSwipeToDelete())
+            val swipe = ItemTouchHelper(setupSwipeToDelete())
             swipe.attachToRecyclerView(it)
         }
     }
@@ -104,7 +103,7 @@ class ListFragment : DaggerFragment() {
         }
     }
 
-    private fun initSwipeToDelete(): ItemTouchHelper.SimpleCallback {
+    private fun setupSwipeToDelete(): ItemTouchHelper.SimpleCallback {
         return object : ItemTouchHelper.SimpleCallback(
             0, ItemTouchHelper.RIGHT
         ) {

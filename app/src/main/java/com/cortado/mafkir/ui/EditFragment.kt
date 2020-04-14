@@ -176,8 +176,8 @@ class EditFragment : DaggerFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         return when (item.itemId) {
-            R.id.action_accept_edit, R.id.action_accept_new -> {
-                mafkirContactViewModel.updateInteractionInterval(
+            R.id.action_accept_new -> {
+                mafkirContactViewModel.insert(
                     args.chosenContact,
                     binding.timeInterval!!
                 )
@@ -195,6 +195,15 @@ class EditFragment : DaggerFragment() {
                             )}",
                     Toast.LENGTH_LONG
                 ).show()
+                true
+            }
+            R.id.action_accept_edit -> {
+                mafkirContactViewModel.updateInteractionInterval(
+                    args.chosenContact,
+                    binding.timeInterval!!
+                )
+                activity?.currentFocus?.clearFocus()
+                Navigation.findNavController(requireView()).popBackStack()
                 true
             }
             R.id.action_delete -> {
