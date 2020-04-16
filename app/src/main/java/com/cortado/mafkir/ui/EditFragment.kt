@@ -16,7 +16,6 @@ import com.cortado.mafkir.model.MafkirContactViewModel
 import com.cortado.mafkir.model.ViewModelProviderFactory
 import com.cortado.mafkir.model.time.Interval
 import com.cortado.mafkir.model.time.IntervalType
-import com.cortado.mafkir.model.time.TimeConverter
 import com.cortado.mafkir.ui.actionbar.ActionBarController
 import com.cortado.mafkir.ui.adapter.NoFilterAdapter
 import com.cortado.mafkir.ui.time.TimePickerFragment
@@ -32,9 +31,6 @@ class EditFragment : DaggerFragment() {
     private lateinit var binding: FragmentEditBinding
 
     private lateinit var mafkirContactViewModel: MafkirContactViewModel
-
-    @Inject
-    lateinit var timeConverter: TimeConverter
 
     @Inject
     lateinit var viewModelProviderFactory: ViewModelProviderFactory
