@@ -94,6 +94,7 @@
                                 android:layout_height="wrap_content"
                                 android:autofillHints="1"
                                 android:inputType="number"
+                                android:maxLength="3"
                                 android:text="@{String.valueOf(timeInterval.interval)}" />
 
                         </com.google.android.material.textfield.TextInputLayout>

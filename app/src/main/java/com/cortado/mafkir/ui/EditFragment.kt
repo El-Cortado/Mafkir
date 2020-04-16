@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
+import android.view.View.OnFocusChangeListener
 import android.widget.Toast
 import androidx.core.view.children
 import androidx.lifecycle.ViewModelProvider
@@ -23,6 +24,7 @@ import com.google.android.material.transition.MaterialContainerTransform
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_edit.*
 import javax.inject.Inject
+
 
 class EditFragment : DaggerFragment() {
 
@@ -125,22 +127,18 @@ class EditFragment : DaggerFragment() {
 
     private fun setupInterval() {
         intervalTypeDropdown.setText(binding.timeInterval?.interval.toString())
-        addInterval.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                binding.timeInterval?.interval = s.toString().toInt()
-            }
+        addInterval.onFocusChangeListener = OnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                val text = addInterval.text?.toString()?.trim()!!
 
-            override fun beforeTextChanged(
-                s: CharSequence?,
-                start: Int,
-                count: Int,
-                after: Int
-            ) {
+                if (text.isEmpty() || text.toInt() == 0) {
+                    addInterval.setText("1")
+                    binding.timeInterval?.interval = 1
+                } else {
+                    binding.timeInterval?.interval = text.toInt()
+                }
             }
-
-            override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-        })
+        }
     }
 
     private fun setupIntervalType() {
