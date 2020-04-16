@@ -65,6 +65,8 @@ class EditFragment : DaggerFragment() {
 
         setupWeekdaysToggleGroup()
 
+        setupInterval()
+
         setupIntervalType()
 
         setupViewModel()
@@ -112,14 +114,37 @@ class EditFragment : DaggerFragment() {
     }
 
     private fun setupWeekdaysToggleGroup() {
-        weekdaysButtons.children.forEach { v -> weekdaysButtons.check(v.id) }
-        weekdaysButtons.addOnButtonCheckedListener { _, _, isChecked ->
-            weekdaysButtons.children.forEach { v ->
-                binding.timeInterval!!.days[
-                        weekdaysButtons.indexOfChild(v)
-                ] = isChecked
+        weekdaysButtons.children.forEachIndexed { i, v ->
+            if (binding.timeInterval!!.days[i]) {
+                weekdaysButtons.check(v.id)
             }
         }
+
+        weekdaysButtons.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            binding.timeInterval!!.days[
+                    weekdaysButtons.indexOfChild(activity?.findViewById(checkedId))
+            ] = isChecked
+        }
+    }
+
+    private fun setupInterval() {
+        intervalTypeDropdown.setText(binding.timeInterval?.interval.toString())
+        addInterval.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                binding.timeInterval?.interval = s.toString().toInt()
+            }
+
+            override fun beforeTextChanged(
+                s: CharSequence?,
+                start: Int,
+                count: Int,
+                after: Int
+            ) {
+            }
+
+            override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
     }
 
     private fun setupIntervalType() {
@@ -127,7 +152,7 @@ class EditFragment : DaggerFragment() {
         val adapter =
             NoFilterAdapter(context!!, R.layout.spinner_item, intervalTypes.toTypedArray())
         intervalTypeDropdown.setAdapter(adapter)
-        intervalTypeDropdown.setText(intervalTypes[0])
+        intervalTypeDropdown.setText(binding.timeInterval?.type?.text)
 
         intervalTypeDropdown.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
@@ -147,7 +172,7 @@ class EditFragment : DaggerFragment() {
                 } else {
                     binding.daysSectionVisibility = View.GONE
                 }
-                binding.timeInterval!!.type = IntervalType.fromText(text.toString())
+                binding.timeInterval?.type = IntervalType.fromText(text.toString())
                 binding.executePendingBindings()
             }
         })
@@ -177,33 +202,26 @@ class EditFragment : DaggerFragment() {
 
         return when (item.itemId) {
             R.id.action_accept_new -> {
-                mafkirContactViewModel.insert(
-                    args.chosenContact,
-                    binding.timeInterval!!
-                )
-                activity?.currentFocus?.clearFocus()
-                Navigation.findNavController(requireView()).popBackStack()
-                Toast.makeText(
-                    context!!,
-                    "We will remind you to contact ${binding.contactName} every " +
-                            "${binding.timeInterval?.interval} ${binding.timeInterval?.type?.text}" +
-                            " at ${getString(
-                                R.string.timeOfDayFormat
-                            ).format(
-                                binding.timeInterval?.timeOfDay?.first,
-                                binding.timeInterval?.timeOfDay?.second
-                            )}",
-                    Toast.LENGTH_LONG
-                ).show()
+                if (verifyForm()) {
+                    mafkirContactViewModel.insert(
+                        args.chosenContact,
+                        binding.timeInterval!!
+                    )
+                    activity?.currentFocus?.clearFocus()
+                    Navigation.findNavController(requireView()).popBackStack()
+                    informNewReminder()
+                }
                 true
             }
             R.id.action_accept_edit -> {
-                mafkirContactViewModel.updateInteractionInterval(
-                    args.chosenContact,
-                    binding.timeInterval!!
-                )
-                activity?.currentFocus?.clearFocus()
-                Navigation.findNavController(requireView()).popBackStack()
+                if (verifyForm()) {
+                    mafkirContactViewModel.updateInteractionInterval(
+                        args.chosenContact,
+                        binding.timeInterval!!
+                    )
+                    activity?.currentFocus?.clearFocus()
+                    Navigation.findNavController(requireView()).popBackStack()
+                }
                 true
             }
             R.id.action_delete -> {
@@ -216,5 +234,37 @@ class EditFragment : DaggerFragment() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun verifyForm(): Boolean {
+        // TODO: this can be solved better using `selectionRequired="true"` on the toggle group,
+        //  but cannot be done due to a bug. see
+        //  https://github.com/material-components/material-components-android/issues/1214
+        if (binding.timeInterval?.type == IntervalType.WEEK &&
+            !binding.timeInterval!!.days.contains(true)
+        ) {
+            Toast.makeText(
+                context!!,
+                "Please select at least one day",
+                Toast.LENGTH_SHORT
+            ).show()
+            return false
+        }
+        return true
+    }
+
+    private fun informNewReminder() {
+        Toast.makeText(
+            context!!,
+            "We will remind you to contact ${binding.contactName} every " +
+                    "${binding.timeInterval?.interval} ${binding.timeInterval?.type?.text}" +
+                    " at ${getString(
+                        R.string.timeOfDayFormat
+                    ).format(
+                        binding.timeInterval?.timeOfDay?.first,
+                        binding.timeInterval?.timeOfDay?.second
+                    )}",
+            Toast.LENGTH_LONG
+        ).show()
     }
 }

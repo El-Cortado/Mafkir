@@ -4,8 +4,8 @@
 
     <data>
         <variable
-            name="timeConverter"
-            type="com.cortado.mafkir.model.time.TimeConverter" />
+            name="intervalDisplayText"
+            type="String" />
         <variable
             name="clickListener"
             type="android.view.View.OnClickListener" />
@@ -65,7 +65,7 @@
                     android:id="@+id/itemInterval"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{@string/intervalDisplayDays(mafkirContact.interval.interval)}"
+                    android:text="@{intervalDisplayText}"
                     android:textSize="18sp"
                     android:textStyle="italic" />
             </LinearLayout>

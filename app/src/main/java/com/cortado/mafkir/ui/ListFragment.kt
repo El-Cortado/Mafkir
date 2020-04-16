@@ -34,7 +34,7 @@ class ListFragment : DaggerFragment() {
 
     private var mafkirContactListAdapter = MafkirContactListAdapter()
 
-    private var allMafkirContacts:List<MafkirContact> = mutableListOf()
+    private var allMafkirContacts: List<MafkirContact> = mutableListOf()
 
     @Inject
     lateinit var viewModelProviderFactory: ViewModelProviderFactory
@@ -132,9 +132,18 @@ class ListFragment : DaggerFragment() {
     }
 
     private fun onContactPicked(contact: String) {
-        val extras =  FragmentNavigatorExtras(binding.fab.toTransitionGroup())
-        val navDirection = ListFragmentDirections.actionListFragmentToEditFragment(contact, false, null)
-        findNavController().navigate(navDirection, extras)
+        if (allMafkirContacts.any { mafkirContact -> mafkirContact.contact == contact }) {
+            Toast.makeText(
+                context!!,
+                "$contact is already here!",
+                Toast.LENGTH_SHORT
+            ).show()
+        } else {
+            val extras = FragmentNavigatorExtras(binding.fab.toTransitionGroup())
+            val navDirection =
+                ListFragmentDirections.actionListFragmentToEditFragment(contact, false, null)
+            findNavController().navigate(navDirection, extras)
+        }
     }
 
     override fun onActivityResult(
@@ -157,7 +166,7 @@ class ListFragment : DaggerFragment() {
     }
 
     private fun getContactDisplayName(data: Intent?): String? {
-        var contactName:String? = null
+        var contactName: String? = null
 
         val projection = arrayOf(
             ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME

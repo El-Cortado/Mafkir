@@ -46,14 +46,12 @@
     <style name="AppTheme.ExposedDropdownMenu.AutoCompleteStyle">
         <!-- restore padding to sanity -->
         <item name="android:padding">16dp</item>
-        <item name="android:textColor">@color/colorOnSurface</item>
         <item name="android:textSize">20sp</item>
     </style>
 
     <!-- style for material spinner 'item' layout -->
     <style name="MaterialSpinnerItem" parent="Widget.AppCompat.TextView">
         <item name="android:color">@color/colorOnSurface</item>
-        <item name="android:textColor">@color/colorOnSurface</item>
         <item name="android:textSize">20sp</item>
         <item name="android:ellipsize">end</item>
         <item name="android:maxLines">1</item>
