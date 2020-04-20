@@ -1,8 +1,8 @@
 package com.cortado.mafkir.model.time
 
-enum class IntervalType(val text: String) {
-    WEEK("weeks"),
-    DAY("days");
+enum class IntervalType(val text: String, val millisInUnit: Long) {
+    WEEK("weeks", 604800000),
+    DAY("days", 86400000);
 
     companion object {
         @JvmStatic

@@ -73,8 +73,7 @@ class EditFragment : DaggerFragment() {
 
     private fun setupBinding() {
         if (args.editExisting) {
-            args.mafkirContact.let {
-                it!!
+            args.mafkirContact!!.let {
                 binding.cardTransitionName = getString(R.string.edit_transition_name).format(it.id)
                 binding.contactName = args.chosenContact
                 binding.timeInterval = it.interval
@@ -85,7 +84,7 @@ class EditFragment : DaggerFragment() {
             binding.timeInterval = Interval(
                 IntervalType.WEEK,
                 1,
-                arrayOf(true, true, true, true, true, false, false),
+                arrayOf(true, true, true, true, true, true, false),
                 Pair(1, 0)
             )
         }
@@ -98,7 +97,8 @@ class EditFragment : DaggerFragment() {
                     binding.timeInterval?.timeOfDay = Pair(hourOfDay, minute)
                     updateTimeOfDay()
                     binding.executePendingBindings()
-                }
+                },
+                binding.timeInterval!!.timeOfDay
             ).show(parentFragmentManager, "TimePicker")
         }
         binding.executePendingBindings()
@@ -112,16 +112,16 @@ class EditFragment : DaggerFragment() {
     }
 
     private fun setupWeekdaysToggleGroup() {
-        weekdaysButtons.children.forEachIndexed { i, v ->
-            if (binding.timeInterval!!.days[i]) {
-                weekdaysButtons.check(v.id)
+        blacklistWeekdaysButtons.children.forEachIndexed { i, v ->
+            if (!binding.timeInterval!!.days[i]) {
+                blacklistWeekdaysButtons.check(v.id)
             }
         }
 
-        weekdaysButtons.addOnButtonCheckedListener { _, checkedId, isChecked ->
+        blacklistWeekdaysButtons.addOnButtonCheckedListener { _, checkedId, isChecked ->
             binding.timeInterval!!.days[
-                    weekdaysButtons.indexOfChild(activity?.findViewById(checkedId))
-            ] = isChecked
+                    blacklistWeekdaysButtons.indexOfChild(activity?.findViewById(checkedId))
+            ] = !isChecked
         }
     }
 
@@ -161,11 +161,6 @@ class EditFragment : DaggerFragment() {
             }
 
             override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
-                if (text.toString() == IntervalType.WEEK.text) {
-                    binding.daysSectionVisibility = View.VISIBLE
-                } else {
-                    binding.daysSectionVisibility = View.GONE
-                }
                 binding.timeInterval?.type = IntervalType.fromText(text.toString())
                 binding.executePendingBindings()
             }
@@ -215,6 +210,7 @@ class EditFragment : DaggerFragment() {
                     )
                     activity?.currentFocus?.clearFocus()
                     Navigation.findNavController(requireView()).popBackStack()
+                    informNewReminder()
                 }
                 true
             }
@@ -231,15 +227,11 @@ class EditFragment : DaggerFragment() {
     }
 
     private fun verifyForm(): Boolean {
-        // TODO: this can be solved better using `selectionRequired="true"` on the toggle group,
-        //  but cannot be done due to a bug. see
-        //  https://github.com/material-components/material-components-android/issues/1214
-        if (binding.timeInterval?.type == IntervalType.WEEK &&
-            !binding.timeInterval!!.days.contains(true)
+        if (!binding.timeInterval!!.days.contains(true)
         ) {
             Toast.makeText(
                 context!!,
-                "Please select at least one day",
+                "Please allow at least one day",
                 Toast.LENGTH_SHORT
             ).show()
             return false
@@ -257,8 +249,19 @@ class EditFragment : DaggerFragment() {
                     ).format(
                         binding.timeInterval?.timeOfDay?.first,
                         binding.timeInterval?.timeOfDay?.second
-                    )}",
+                    )}" +
+                    if (binding.timeInterval?.days!!.contains(false)) " but not on ${getBlacklistDaysText()}" else "",
             Toast.LENGTH_LONG
         ).show()
+    }
+
+    private fun getBlacklistDaysText(): String {
+        val days =
+            arrayOf("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday")
+
+        return binding.timeInterval?.days
+            ?.mapIndexed { i, isDayActive -> if (!isDayActive) days[i] else "" }
+            ?.filter { s -> s.isNotEmpty() }
+            ?.reduce { s1, s2 -> "$s1, $s2" }!!
     }
 }

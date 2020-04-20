@@ -69,7 +69,8 @@ class MafkirContactListAdapter : RecyclerView.Adapter<MafkirContactListAdapter.V
             }
         }
 
-        // TODO: resolve interval-pass calculation, including notifying user
-        private fun intervalPassed(item: MafkirContact) = false
+        private fun intervalPassed(contact: MafkirContact) =
+            contact.interval.interval * contact.interval.type.millisInUnit <
+                    System.currentTimeMillis() - contact.lastInteractionMillis
     }
 }

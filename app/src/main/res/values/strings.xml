@@ -8,7 +8,7 @@
     <string name="cancel">Cancel</string>
     <string name="remind_me_to_contact">Remind me to contact</string>
     <string name="every">EVERY</string>
-    <string name="repeats_on">REPEATS ON</string>
+    <string name="dont_notify_on">DONT NOTIFY ME ON</string>
     <string name="interval">interval</string>
     <string name="_1">1</string>
     <string name="at">AT</string>
