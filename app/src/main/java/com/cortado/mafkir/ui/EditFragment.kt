@@ -250,7 +250,7 @@ class EditFragment : DaggerFragment() {
                         binding.timeInterval?.timeOfDay?.first,
                         binding.timeInterval?.timeOfDay?.second
                     )}" +
-                    if (binding.timeInterval?.days!!.contains(false)) " but not on ${getBlacklistDaysText()}" else "",
+                    if (binding.timeInterval?.days!!.contains(false)) " except on ${getBlacklistDaysText()}" else "",
             Toast.LENGTH_LONG
         ).show()
     }
