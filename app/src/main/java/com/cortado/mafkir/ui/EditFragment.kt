@@ -204,7 +204,7 @@ class EditFragment : DaggerFragment() {
             }
             R.id.action_accept_edit -> {
                 if (verifyForm()) {
-                    mafkirContactViewModel.updateInteractionInterval(
+                    mafkirContactViewModel.updateInterval(
                         args.chosenContact,
                         binding.timeInterval!!
                     )

@@ -15,8 +15,8 @@ class MafkirContactViewModel @Inject constructor(
         mafkirContactRepository.insert(contact, interval)
     }
 
-    fun updateInteractionInterval(contact: String, interval: Interval) {
-        mafkirContactRepository.updateInteractionInterval(
+    fun updateInterval(contact: String, interval: Interval) {
+        mafkirContactRepository.updateInterval(
             contact,
             interval
         )

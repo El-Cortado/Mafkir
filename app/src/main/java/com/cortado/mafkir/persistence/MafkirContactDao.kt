@@ -10,8 +10,8 @@ interface MafkirContactDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(mafkirContact: MafkirContact)
 
-    @Query("update mafkir_contacts set interval=:interactionInterval where contact=:contact")
-    fun updateInteractionInterval(contact: String, interactionInterval: Interval)
+    @Query("update mafkir_contacts set interval=:interval where contact=:contact")
+    fun updateInterval(contact: String, interval: Interval)
 
     @Query("update mafkir_contacts set lastInteractionMillis=:lastInteraction where contact=:contact")
     fun updateLastInteraction(contact: String, lastInteraction: Long)
