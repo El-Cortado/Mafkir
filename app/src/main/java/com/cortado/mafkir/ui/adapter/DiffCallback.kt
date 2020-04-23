@@ -17,8 +17,6 @@ class DiffCallback(
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldList[oldItemPosition].id == newList[newItemPosition].id
-                && oldList[oldItemPosition].contact == newList[newItemPosition].contact
-                && oldList[oldItemPosition].interactionIntervalMillis == newList[newItemPosition].interactionIntervalMillis
+        return oldList[oldItemPosition] == newList[newItemPosition]
     }
 }

@@ -5,9 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -16,10 +14,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.cortado.mafkir.Constants
+import com.cortado.mafkir.R
 import com.cortado.mafkir.databinding.FragmentListBinding
 import com.cortado.mafkir.model.MafkirContactViewModel
 import com.cortado.mafkir.model.ViewModelProviderFactory
 import com.cortado.mafkir.persistence.MafkirContact
+import com.cortado.mafkir.ui.actionbar.ActionBarController
 import com.cortado.mafkir.ui.adapter.MafkirContactListAdapter
 import com.cortado.mafkir.ui.extension.toTransitionGroup
 import com.cortado.mafkir.ui.extension.waitForTransition
@@ -34,13 +34,15 @@ class ListFragment : DaggerFragment() {
 
     private var mafkirContactListAdapter = MafkirContactListAdapter()
 
-    private var allMafkirContacts:List<MafkirContact> = mutableListOf()
+    private var allMafkirContacts: List<MafkirContact> = mutableListOf()
 
     @Inject
     lateinit var viewModelProviderFactory: ViewModelProviderFactory
 
     private lateinit var mafkirContactViewModel: MafkirContactViewModel
 
+    @Inject
+    lateinit var actionBarController: ActionBarController
 
 
     override fun onCreateView(
@@ -55,11 +57,18 @@ class ListFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
         setupFab()
         setupViewModel()
         initRecyclerView()
         observerLiveData()
         waitForTransition(binding.recyclerView)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.no_options, menu)
+        actionBarController.hideBack(this)
+        actionBarController.setHeadline(this, "Mafkir")
     }
 
     private fun observerLiveData() {
@@ -75,7 +84,7 @@ class ListFragment : DaggerFragment() {
     private fun initRecyclerView() {
         binding.recyclerView.let {
             it.adapter = mafkirContactListAdapter
-            val swipe = ItemTouchHelper(initSwipeToDelete())
+            val swipe = ItemTouchHelper(setupSwipeToDelete())
             swipe.attachToRecyclerView(it)
         }
     }
@@ -94,7 +103,7 @@ class ListFragment : DaggerFragment() {
         }
     }
 
-    private fun initSwipeToDelete(): ItemTouchHelper.SimpleCallback {
+    private fun setupSwipeToDelete(): ItemTouchHelper.SimpleCallback {
         return object : ItemTouchHelper.SimpleCallback(
             0, ItemTouchHelper.RIGHT
         ) {
@@ -123,9 +132,18 @@ class ListFragment : DaggerFragment() {
     }
 
     private fun onContactPicked(contact: String) {
-        val extras =  FragmentNavigatorExtras(binding.fab.toTransitionGroup())
-        val navDirection = ListFragmentDirections.actionListFragmentToAddFragment(contact)
-        findNavController().navigate(navDirection, extras)
+        if (allMafkirContacts.any { mafkirContact -> mafkirContact.contact == contact }) {
+            Toast.makeText(
+                context!!,
+                "$contact is already here!",
+                Toast.LENGTH_SHORT
+            ).show()
+        } else {
+            val extras = FragmentNavigatorExtras(binding.fab.toTransitionGroup())
+            val navDirection =
+                ListFragmentDirections.actionListFragmentToEditFragment(contact, false, null)
+            findNavController().navigate(navDirection, extras)
+        }
     }
 
     override fun onActivityResult(
@@ -148,7 +166,7 @@ class ListFragment : DaggerFragment() {
     }
 
     private fun getContactDisplayName(data: Intent?): String? {
-        var contactName:String? = null
+        var contactName: String? = null
 
         val projection = arrayOf(
             ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME

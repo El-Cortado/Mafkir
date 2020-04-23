@@ -1,6 +1,6 @@
 package com.cortado.mafkir.ui.adapter
 
-import android.graphics.Color
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,8 +8,8 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.cortado.mafkir.R
 import com.cortado.mafkir.databinding.MafkircontactItemsBinding
-import com.cortado.mafkir.model.TimeConverter
 import com.cortado.mafkir.persistence.MafkirContact
 import com.cortado.mafkir.ui.ListFragmentDirections
 import com.cortado.mafkir.ui.extension.toTransitionGroup
@@ -24,6 +24,7 @@ class MafkirContactListAdapter : RecyclerView.Adapter<MafkirContactListAdapter.V
         viewType: Int
     ): ViewHolder {
         return ViewHolder(
+            parent.context,
             MafkircontactItemsBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
@@ -47,21 +48,29 @@ class MafkirContactListAdapter : RecyclerView.Adapter<MafkirContactListAdapter.V
         diffResult.dispatchUpdatesTo(this)
     }
 
-    class ViewHolder(private val binding: MafkircontactItemsBinding) :
+    class ViewHolder(private val context: Context, private val binding: MafkircontactItemsBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        private val timeConverter = TimeConverter()
 
         fun bind(item: MafkirContact) {
             binding.mafkirContact = item
-            binding.timeConverter = timeConverter
-            if (System.currentTimeMillis() - item.lastInteractionMillis > item.interactionIntervalMillis) {
-                itemView.cardView.setCardBackgroundColor(Color.RED)
+            binding.intervalDisplayText =
+                "Every ${item.interval.interval} ${item.interval.type.text}"
+            if (intervalPassed(item)) {
+                itemView.cardView.setCardBackgroundColor(context.resources.getColor(R.color.colorError))
             }
             binding.clickListener = View.OnClickListener {
-                val navDirection = ListFragmentDirections.actionListFragmentToEditFragment(item)
-                val extras =  FragmentNavigatorExtras(binding.root.toTransitionGroup())
+                val navDirection = ListFragmentDirections.actionListFragmentToEditFragment(
+                    item.contact,
+                    true,
+                    item
+                )
+                val extras = FragmentNavigatorExtras(binding.root.toTransitionGroup())
                 it.findNavController().navigate(navDirection, extras)
             }
         }
+
+        private fun intervalPassed(contact: MafkirContact) =
+            contact.interval.interval * contact.interval.type.millisInUnit <
+                    System.currentTimeMillis() - contact.lastInteractionMillis
     }
 }

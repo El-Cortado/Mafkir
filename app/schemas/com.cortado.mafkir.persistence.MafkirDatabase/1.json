@@ -6,7 +6,7 @@
     "entities": [
       {
         "tableName": "mafkir_contacts",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `contact` TEXT NOT NULL, `interactionInterval` INTEGER NOT NULL, `lastInteraction` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `contact` TEXT NOT NULL, `interval` INTEGER NOT NULL, `lastInteraction` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -21,8 +21,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "interactionInterval",
-            "columnName": "interactionInterval",
+            "fieldPath": "interval",
+            "columnName": "interval",
             "affinity": "INTEGER",
             "notNull": true
           },
