@@ -21,6 +21,7 @@ import com.cortado.mafkir.model.ViewModelProviderFactory
 import com.cortado.mafkir.persistence.MafkirContact
 import com.cortado.mafkir.ui.actionbar.ActionBarController
 import com.cortado.mafkir.ui.adapter.MafkirContactListAdapter
+import com.cortado.mafkir.ui.exceptions.NoPhoneNumberException
 import com.cortado.mafkir.ui.extension.toTransitionGroup
 import com.cortado.mafkir.ui.extension.waitForTransition
 import dagger.android.support.DaggerFragment
@@ -131,7 +132,7 @@ class ListFragment : DaggerFragment() {
         startActivityForResult(contactPickerIntent, Constants.CONTACT_PICKER_RESULT)
     }
 
-    private fun onContactPicked(contact: String) {
+    private fun onContactPicked(contact: String, number: String) {
         if (allMafkirContacts.any { mafkirContact -> mafkirContact.contact == contact }) {
             Toast.makeText(
                 context!!,
@@ -141,7 +142,12 @@ class ListFragment : DaggerFragment() {
         } else {
             val extras = FragmentNavigatorExtras(binding.fab.toTransitionGroup())
             val navDirection =
-                ListFragmentDirections.actionListFragmentToEditFragment(contact, false, null)
+                ListFragmentDirections.actionListFragmentToEditFragment(
+                    contact,
+                    number,
+                    false,
+                    null
+                )
             findNavController().navigate(navDirection, extras)
         }
     }
@@ -152,16 +158,25 @@ class ListFragment : DaggerFragment() {
         data: Intent?
     ) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK) {
-            when (requestCode) {
-                Constants.CONTACT_PICKER_RESULT -> {
-                    getContactDisplayName(data)?.let {
-                        onContactPicked(it)
+        try {
+            if (resultCode == Activity.RESULT_OK) {
+                when (requestCode) {
+                    Constants.CONTACT_PICKER_RESULT -> {
+                        onContactPicked(
+                            getContactDisplayName(data)!!,
+                            getContactPhoneNumber(data)!!
+                        )
                     }
                 }
+            } else {
+                Log.w("Mafkir", "Warning: activity result not ok")
             }
-        } else {
-            Log.w("Mafkir", "Warning: activity result not ok")
+        } catch (e: NoPhoneNumberException) {
+            Toast.makeText(
+                context,
+                "The contact chosen does not have a phone number!",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
@@ -185,6 +200,58 @@ class ListFragment : DaggerFragment() {
         }?.close()
 
         return contactName
+    }
+
+    private fun getContactPhoneNumber(data: Intent?): String? {
+        var hasPhone: String? = null
+        var id: String? = null
+
+        val projection = arrayOf(
+            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME
+        )
+
+        val cursor = activity?.applicationContext?.contentResolver?.query(
+            data?.data!!, projection,
+            null, null, null
+        )
+
+        cursor?.also {
+            it.moveToFirst()
+            val hasPhoneNumberColumnIndex =
+                it.getColumnIndex(ContactsContract.CommonDataKinds.Phone.HAS_PHONE_NUMBER)
+            val idColumnIndex =
+                it.getColumnIndex(ContactsContract.CommonDataKinds.Phone._ID)
+            hasPhone = it.getString(hasPhoneNumberColumnIndex)
+            id = it.getString(idColumnIndex)
+        }?.close()
+
+        if (hasPhone!!.endsWith("0")) {
+            throw NoPhoneNumberException()
+        } else {
+            var number: String? = null
+            val phones = activity?.applicationContext?.contentResolver?.query(
+                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                null,
+                ContactsContract.CommonDataKinds.Phone._ID + " = " + id,
+                null,
+                null
+            )
+
+            if (phones!!.count > 0) {
+                while (phones.moveToNext()) {
+                    number =
+                        phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+                }
+            }
+
+            phones.close()
+
+            if (number == null) {
+                throw NoPhoneNumberException()
+            }
+
+            return number
+        }
     }
 }
 

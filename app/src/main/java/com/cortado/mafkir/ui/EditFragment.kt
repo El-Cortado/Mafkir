@@ -194,6 +194,7 @@ class EditFragment : DaggerFragment() {
                 if (verifyForm()) {
                     mafkirContactViewModel.insert(
                         args.chosenContact,
+                        args.phoneNumber,
                         binding.timeInterval!!
                     )
                     activity?.currentFocus?.clearFocus()

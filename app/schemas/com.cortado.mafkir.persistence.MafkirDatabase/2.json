@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 2,
-    "identityHash": "a6e78dafea2ab554479c32d4ed5f6b8e",
+    "identityHash": "cb4e2d2f376510615c60dc0ad3f841af",
     "entities": [
       {
         "tableName": "mafkir_contacts",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `contact` TEXT NOT NULL, `interval` TEXT NOT NULL, `lastInteractionMillis` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `contact` TEXT NOT NULL, `phoneNumber` TEXT NOT NULL, `interval` TEXT NOT NULL, `lastInteractionMillis` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -17,6 +17,12 @@
           {
             "fieldPath": "contact",
             "columnName": "contact",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "phoneNumber",
+            "columnName": "phoneNumber",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -46,7 +52,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a6e78dafea2ab554479c32d4ed5f6b8e')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'cb4e2d2f376510615c60dc0ad3f841af')"
     ]
   }
 }
