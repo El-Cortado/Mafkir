@@ -45,7 +45,6 @@ class ListFragment : DaggerFragment() {
     @Inject
     lateinit var actionBarController: ActionBarController
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -207,7 +206,8 @@ class ListFragment : DaggerFragment() {
         var id: String? = null
 
         val projection = arrayOf(
-            ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME
+            ContactsContract.CommonDataKinds.Phone.HAS_PHONE_NUMBER,
+            ContactsContract.CommonDataKinds.Phone._ID
         )
 
         val cursor = activity?.applicationContext?.contentResolver?.query(

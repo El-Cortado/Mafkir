@@ -2,6 +2,7 @@ package com.cortado.mafkir.notifications
 
 import android.app.Application
 import android.app.Notification
+import android.graphics.Bitmap
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.cortado.mafkir.R
@@ -15,7 +16,8 @@ class MafkirNotifier(application: Application, channelId: String) {
         title: String,
         body: String,
         onGoing: Boolean,
-        actions: List<NotificationCompat.Action> = ArrayList()
+        actions: List<NotificationCompat.Action> = ArrayList(),
+        largeIcon: Bitmap? = null
     ): Notification {
         val builder = NotificationCompat.Builder(mApplication, mChannelId)
             .setSmallIcon(R.drawable.ic_launcher_foreground)
@@ -25,6 +27,10 @@ class MafkirNotifier(application: Application, channelId: String) {
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
         actions.forEach { builder.addAction(it) }
+
+        if (largeIcon != null) {
+            builder.setLargeIcon(largeIcon)
+        }
 
         return builder.build()
     }
