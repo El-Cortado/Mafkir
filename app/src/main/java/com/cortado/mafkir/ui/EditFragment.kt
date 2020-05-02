@@ -1,12 +1,17 @@
 package com.cortado.mafkir.ui
 
+import android.app.PendingIntent
 import android.app.TimePickerDialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
 import android.view.View.OnFocusChangeListener
 import android.widget.Toast
+import androidx.core.app.NotificationCompat
+import androidx.core.graphics.drawable.IconCompat
 import androidx.core.view.children
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
@@ -17,6 +22,8 @@ import com.cortado.mafkir.model.MafkirContactViewModel
 import com.cortado.mafkir.model.ViewModelProviderFactory
 import com.cortado.mafkir.model.time.Interval
 import com.cortado.mafkir.model.time.IntervalType
+import com.cortado.mafkir.notifications.MafkirNotifier
+import com.cortado.mafkir.persistence.MafkirContact
 import com.cortado.mafkir.ui.actionbar.ActionBarController
 import com.cortado.mafkir.ui.adapter.NoFilterAdapter
 import com.cortado.mafkir.ui.time.TimePickerFragment
@@ -24,6 +31,7 @@ import com.google.android.material.transition.MaterialContainerTransform
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_edit.*
 import javax.inject.Inject
+import javax.inject.Named
 
 
 class EditFragment : DaggerFragment() {
@@ -69,6 +77,51 @@ class EditFragment : DaggerFragment() {
 
         setupViewModel()
 
+        if (args.mafkirContact != null) {
+            remind(args.mafkirContact!!)
+        }
+    }
+
+    @field:[Inject Named("User")]
+    lateinit var mafkirNotifier: MafkirNotifier
+
+    // todo: do not send the notification here but only on the correct time
+    fun remind(contact: MafkirContact) {
+        val contactName = contact.contact
+        val contactPhoneNumber = contact.phoneNumber.trim()
+        val daysSinceLastContact =
+            (System.currentTimeMillis() - contact.lastInteractionMillis) / IntervalType.DAY.millisInUnit
+
+        val uri = "tel:$contactPhoneNumber"
+        val dialIntent = Intent(Intent.ACTION_DIAL)
+        dialIntent.data = Uri.parse(uri)
+        val pendingDialIntent =
+            PendingIntent.getActivity(context, 0, dialIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+        val whatsAppIntent = Intent(Intent.ACTION_VIEW)
+        whatsAppIntent.data = Uri.parse("https://api.whatsapp.com/send?phone=$contactPhoneNumber")
+        val pendingWhatsappIntent =
+            PendingIntent.getActivity(context, 0, whatsAppIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+        mafkirNotifier.notify(
+            6969, mafkirNotifier.build(
+                "Keep in contact with $contactName!",
+                "You haven't talked to $contactName in $daysSinceLastContact days.",
+                false,
+                listOf(
+                    NotificationCompat.Action(
+                        IconCompat.createWithResource(context, R.drawable.call_icon),
+                        "CALL $contactName",
+                        pendingDialIntent
+                    ),
+                    NotificationCompat.Action(
+                        IconCompat.createWithResource(context, R.drawable.whatsapp_icon),
+                        "MESSAGE $contactName",
+                        pendingWhatsappIntent
+                    )
+                )
+            )
+        )
     }
 
     private fun setupBinding() {
@@ -194,6 +247,7 @@ class EditFragment : DaggerFragment() {
                 if (verifyForm()) {
                     mafkirContactViewModel.insert(
                         args.chosenContact,
+                        args.phoneNumber,
                         binding.timeInterval!!
                     )
                     activity?.currentFocus?.clearFocus()

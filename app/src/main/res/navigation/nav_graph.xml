@@ -23,6 +23,10 @@
             app:argType="string"
             app:nullable="false" />
         <argument
+            android:name="phoneNumber"
+            app:argType="string"
+            app:nullable="false" />
+        <argument
             android:name="editExisting"
             app:argType="boolean"
             app:nullable="false" />

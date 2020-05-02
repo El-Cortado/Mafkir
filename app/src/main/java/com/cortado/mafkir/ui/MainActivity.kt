@@ -2,15 +2,15 @@ package com.cortado.mafkir.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
-import androidx.navigation.Navigation
 import com.cortado.mafkir.R
 import com.cortado.mafkir.notifications.InteractionsService
+import com.cortado.mafkir.notifications.MafkirNotifier
 import com.cortado.mafkir.permissions.MafkirPermissionsValidator
 import com.cortado.mafkir.ui.actionbar.ActionBarController
 import dagger.android.support.DaggerAppCompatActivity
 import javax.inject.Inject
+import javax.inject.Named
 
 
 class MainActivity : DaggerAppCompatActivity() {

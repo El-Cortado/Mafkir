@@ -12,12 +12,13 @@ import javax.inject.Inject
 class MafkirContactRepository @Inject constructor(private val mafkirContactDao: MafkirContactDao) {
     private val allContacts = mafkirContactDao.getAll()
 
-    fun insert(contact: String, interval: Interval) {
+    fun insert(contact: String, phoneNumber: String, interval: Interval) {
         CoroutineScope(Dispatchers.IO).launch {
             mafkirContactDao.insert(
                 MafkirContact(
                     0,
                     contact,
+                    phoneNumber,
                     interval,
                     System.currentTimeMillis()
                 )

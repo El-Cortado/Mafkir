@@ -61,6 +61,7 @@ class MafkirContactListAdapter : RecyclerView.Adapter<MafkirContactListAdapter.V
             binding.clickListener = View.OnClickListener {
                 val navDirection = ListFragmentDirections.actionListFragmentToEditFragment(
                     item.contact,
+                    item.phoneNumber,
                     true,
                     item
                 )

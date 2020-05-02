@@ -11,8 +11,8 @@ class MafkirContactViewModel @Inject constructor(
     private val mafkirContactRepository: MafkirContactRepository
 ) : ViewModel() {
 
-    fun insert(contact: String, interval: Interval) {
-        mafkirContactRepository.insert(contact, interval)
+    fun insert(contact: String, phoneNumber: String, interval: Interval) {
+        mafkirContactRepository.insert(contact, phoneNumber, interval)
     }
 
     fun updateInterval(contact: String, interval: Interval) {

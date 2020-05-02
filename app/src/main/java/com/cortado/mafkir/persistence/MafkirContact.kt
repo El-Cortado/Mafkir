@@ -14,6 +14,7 @@ data class MafkirContact(
     @PrimaryKey(autoGenerate = true)
     var id: Int,
     var contact: String,
+    var phoneNumber: String,
     var interval: Interval,
     var lastInteractionMillis: Long
 ) : Parcelable
